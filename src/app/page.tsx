@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 
 export default function Home() {
@@ -9,19 +11,19 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24 bg-gray-900">
       <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-3xl md:text-5xl font-bold mb-6">
+        <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-100">
           P(doom) Calculator
         </h1>
-        <p className="text-xl mb-8">
+        <p className="text-xl mb-8 text-gray-300">
           Estimate the probability of AI-related existential catastrophe based on your
           beliefs about key factors.
         </p>
         
-        <div className="mb-10 bg-stone-100 p-6 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-semibold mb-3">How It Works</h2>
-          <ol className="text-left list-decimal list-inside space-y-2">
+        <div className="mb-10 bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+          <h2 className="text-2xl font-semibold mb-3 text-gray-200">How It Works</h2>
+          <ol className="text-left list-decimal list-inside space-y-2 text-gray-300">
             <li>Answer a series of questions about AI risk factors</li>
             <li>Get your P(doom) estimate for 2035 based on a Bayesian Network</li>
             <li>See heuristic projections for 2050 and 2100</li>
@@ -31,15 +33,15 @@ export default function Home() {
         
         <Link
           href="/quiz"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-xl transition-all"
+          className="bg-blue-800 hover:bg-blue-700 text-blue-100 font-bold py-3 px-8 rounded-lg text-xl transition-all shadow-md hover:shadow-lg"
           onClick={handleStartQuiz}
         >
           Start Quiz
         </Link>
         
         <div className="mt-10">
-          <h3 className="text-xl font-semibold mb-2">Educational Purpose</h3>
-          <p className="text-sm text-stone-600">
+          <h3 className="text-xl font-semibold mb-2 text-gray-200">Educational Purpose</h3>
+          <p className="text-sm text-gray-400">
             This tool is designed for educational purposes to help people think about AI risk in a structured way.
             The P(doom) estimates are subjective and should not be taken as scientific predictions.
           </p>
