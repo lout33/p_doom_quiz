@@ -1,3 +1,5 @@
+'use client';
+
 interface ProgressBarProps {
   progress: number;
   currentQuestion: number;

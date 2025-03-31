@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { PDoomResults } from '../lib/bayes-network';
-import { loadExpertsForYear } from '../lib/data-service';
+import { loadExpertsForYear, Expert } from '../lib/data-service';
 
 // Simple bar chart style properties
 const BAR_HEIGHT = 30;
@@ -29,11 +29,21 @@ export default function ResultsChart({ results }: ResultsChartProps) {
   
   // Add user to the experts list
   const userEstimate = getUserEstimate();
-  const allData = [
+  
+  // Create a properly typed merged array
+  const allData: (Expert & { isUser?: boolean })[] = [
     ...experts,
-    { name: 'YOUR ESTIMATE', [`pdoom_${selectedYear}_percent`]: userEstimate }
+    { 
+      name: 'YOUR ESTIMATE', 
+      pdoom_2035_percent: selectedYear === 2035 ? userEstimate : null,
+      pdoom_2050_percent: selectedYear === 2050 ? userEstimate : null,
+      pdoom_2100_percent: selectedYear === 2100 ? userEstimate : null,
+      isUser: true
+    }
   ].sort((a, b) => {
-    return (a[`pdoom_${selectedYear}_percent`] || 0) - (b[`pdoom_${selectedYear}_percent`] || 0);
+    const aValue = a[`pdoom_${selectedYear}_percent`] as number | null;
+    const bValue = b[`pdoom_${selectedYear}_percent`] as number | null;
+    return (aValue || 0) - (bValue || 0);
   });
   
   // Calculate total height based on number of items
@@ -62,8 +72,8 @@ export default function ResultsChart({ results }: ResultsChartProps) {
       <div className="mt-6 overflow-x-auto">
         <div style={{ minWidth: '500px', height: `${chartHeight}px` }}>
           {allData.map((item, index) => {
-            const value = item[`pdoom_${selectedYear}_percent`] || 0;
-            const isUser = item.name === 'YOUR ESTIMATE';
+            const value = item[`pdoom_${selectedYear}_percent`] as number | null;
+            const displayValue = value !== null ? value : 0;
             
             return (
               <div key={index} className="flex items-center mb-2 relative">
@@ -74,13 +84,13 @@ export default function ResultsChart({ results }: ResultsChartProps) {
                   <div 
                     className="rounded transition-all duration-500"
                     style={{ 
-                      width: `${value}%`, 
+                      width: `${displayValue}%`, 
                       height: `${BAR_HEIGHT}px`,
-                      backgroundColor: isUser ? USER_BAR_COLOR : BAR_COLOR
+                      backgroundColor: item.isUser ? USER_BAR_COLOR : BAR_COLOR
                     }}
                   ></div>
                   <span className="text-sm absolute right-0 top-0 ml-2">
-                    {typeof value === 'number' ? value.toFixed(1) : value}%
+                    {value !== null ? value.toFixed(1) : 'N/A'}%
                   </span>
                 </div>
               </div>

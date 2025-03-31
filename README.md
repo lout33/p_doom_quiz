@@ -10,9 +10,22 @@
 6.  **Heuristic Future Estimates (2050 & 2100):** It provides *rough, rule-based estimates* for P(doom) by **2050** and **2100**, extrapolating from the 2035 result and the calculated AI development timeline.
 7.  **Expert Data Comparison:** It loads P(doom) estimates from various experts stored in a CSV file (`experts_pdoom.csv`) and compares the user's calculated estimates (for 2035, and the heuristic 2050/2100 guesses) to the closest expert opinion for each timeframe.
 8.  **Step-by-Step Feedback:** Shows how the P(doom by 2035) estimate changes after each question the user answers.
-9. Visualize bar chart how your estimate compares across the expert spectrum
+9. **Visual Comparison:** Visualize your estimate compared to experts across the spectrum with an interactive bar chart.
 
+## Changelog
 
+### v1.0.0 (Initial Release)
+- Implemented main landing page
+- Created interactive quiz component with progress tracking
+- Built Bayesian network implementation for probability estimation
+- Added results page with comparison to expert estimates
+- Implemented visualization of results with interactive year selection
+- Added expert data comparison via bar chart
+
+### v0.1.0 (Alpha)
+- Initial conversion from Python implementation to Next.js
+- Basic quiz functionality
+- Simple probability calculation
 
 ## Getting Started
 
