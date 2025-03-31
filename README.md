@@ -1,7 +1,5 @@
 ## Features
 
-
-
 1.  **Estimates AI Risk (P(doom)):** The main goal is to estimate the probability of AI-related existential catastrophe ("P(doom)"), specifically focusing on the year **2035**.
 2.  **Interactive Quiz:** It asks the user a series of questions about factors believed to influence AI risk (like development timelines, alignment difficulty, regulation, etc.).
 3.  **Manual Bayesian Network:** It simulates the logic of a simplified Bayesian Network based on the user's answers without relying on specialized libraries like `pgmpy`.
@@ -11,8 +9,75 @@
 7.  **Expert Data Comparison:** It loads P(doom) estimates from various experts stored in a CSV file (`experts_pdoom.csv`) and compares the user's calculated estimates (for 2035, and the heuristic 2050/2100 guesses) to the closest expert opinion for each timeframe.
 8.  **Step-by-Step Feedback:** Shows how the P(doom by 2035) estimate changes after each question the user answers.
 9. **Visual Comparison:** Visualize your estimate compared to experts across the spectrum with an interactive bar chart.
+10. **Dark Mode Interface:** Features a sleek dark mode interface by default, providing a modern look that's easier on the eyes and fits the serious subject matter.
+
+## UI Improvement Plan
+
+### Goals
+- Create a more engaging, visually appealing interface
+- Improve user experience through better feedback and interactions
+- Enhance data visualization for clearer understanding of results
+- Make the app feel more modern and professional
+
+### Planned Improvements
+1. **Design System Enhancements**
+   - Implement a cohesive color scheme reflecting futuristic/tech themes
+   - Add subtle animations and transitions for a more polished feel
+   - Improve typography with better hierarchy and readability
+
+2. **Quiz Experience**
+   - Add animated progress indicators
+   - Create visual feedback for answer selection
+   - Implement a more interactive question card design
+   - Add visualization of how each answer affects the probability calculation
+
+3. **Results Page Overhaul**
+   - Create a more dynamic and visually engaging results dashboard
+   - Implement animated charts that show comparison to expert opinions
+   - Add explanatory tooltips and contextual information
+   - Create shareable result cards for social media
+
+4. **General UI Components**
+   - Design custom buttons with hover/active states
+   - Create consistent card components with subtle shadows
+   - Implement responsive layouts for all device sizes
+   - Add loading states and transitions between pages
+
+5. **Home Page Improvements**
+   - Create an engaging hero section explaining the tool's purpose
+   - Add animated elements to draw attention to call-to-action
+   - Include preview of the quiz experience
+
+### Implementation Status
+
+✅ **Completed UI Improvements**
+- Enhanced ProgressBar with animations, improved visuals, and step indicators
+- Redesigned QuestionCard with interactive selection states and visual feedback
+- Upgraded ResultsChart with animated bars, better legend, and color-coding
+- Improved Quiz page with smoother transitions between questions and better result visualization
+- Redesigned Results page with animated sections, better data visualizations, and improved layout
+- Added color-coded probability indicators throughout the app
+- Implemented consistent shadows, borders, and visual hierarchy
+- Added animations and transitions for a more engaging experience
+- Implemented a dark mode interface as the default theme to provide a modern, sleek appearance
 
 ## Changelog
+
+### v1.2.0 (Dark Mode)
+- Implemented dark mode as the default UI theme
+- Updated all components and pages with dark color scheme
+- Adjusted color contrasts for better readability in dark mode
+- Modified visualization elements with dark-appropriate colors
+- Enhanced visual hierarchy with appropriate dark mode shadows and borders
+
+### v1.1.0 (UI Enhancement)
+- Completely redesigned the user interface for a more engaging experience
+- Added animations and transitions throughout the application
+- Improved the quiz experience with interactive question cards
+- Enhanced result visualizations with color-coding and better data display
+- Implemented responsive design improvements for all device sizes
+- Added visual progress indicators and better feedback during the quiz
+- Updated the results page with animated sections and better expert comparisons
 
 ### v1.0.0 (Initial Release)
 - Implemented main landing page

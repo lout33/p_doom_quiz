@@ -1,6 +1,13 @@
 import Link from 'next/link';
 
 export default function Home() {
+  // Function to clear localStorage for a fresh quiz
+  const handleStartQuiz = () => {
+    // Clear localStorage to ensure a fresh start
+    localStorage.removeItem('pdoom_evidence');
+    console.log('Evidence cleared before starting new quiz from homepage');
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
       <div className="max-w-3xl mx-auto text-center">
@@ -25,6 +32,7 @@ export default function Home() {
         <Link
           href="/quiz"
           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-xl transition-all"
+          onClick={handleStartQuiz}
         >
           Start Quiz
         </Link>

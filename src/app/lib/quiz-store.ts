@@ -3,14 +3,13 @@
 import { Evidence, PDoomResults, analyzePDoom } from './bayes-network';
 import { loadCPTs } from './data-service';
 
-// Store the evidence and CPTs
-let evidence: Evidence = {};
+// Load CPTs once
 const cpts = loadCPTs();
 
-// Update evidence and calculate results
-export function updateEvidenceAndCalculate(newEvidence: Evidence): PDoomResults | null {
-  evidence = { ...evidence, ...newEvidence };
+// Update evidence and calculate results - using a completely fresh approach
+export function calculateResults(evidence: Evidence): PDoomResults | null {
   try {
+    // Always use the provided evidence directly without any module-level state
     return analyzePDoom(evidence, cpts);
   } catch (error) {
     console.error('Error calculating P(doom) results:', error);
@@ -18,15 +17,7 @@ export function updateEvidenceAndCalculate(newEvidence: Evidence): PDoomResults 
   }
 }
 
-// Get current evidence
-export function getEvidence(): Evidence {
-  return { ...evidence };
-}
-
-// Reset evidence
-export function resetEvidence(): void {
-  evidence = {};
-}
-
-// Export the evidence for module access
-export { evidence }; 
+// For debugging
+export function logEvidence(evidence: Evidence, source: string): void {
+  console.log(`Evidence from ${source}:`, JSON.stringify(evidence));
+} 
