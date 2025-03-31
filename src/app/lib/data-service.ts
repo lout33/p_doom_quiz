@@ -1,5 +1,5 @@
 import { CPTs, createPerturbedCPTs } from './bayes-network';
-import cptData from '../../../references/bn_cpts.json';
+import cptData from './bn_cpts.json';
 
 // Expert data type
 export type Expert = {

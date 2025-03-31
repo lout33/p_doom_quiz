@@ -1,0 +1,592 @@
+{
+    "Timeline": {
+        "Early": 0.3,
+        "Mid": 0.4,
+        "Late": 0.3
+    },
+    "Coordination": {
+        "Good": 0.2,
+        "Med": 0.4,
+        "Poor": 0.4
+    },
+    "Interpretability": {
+        "Good": 0.2,
+        "Med": 0.5,
+        "Poor": 0.3
+    },
+    "MisusePotential": {
+        "Low": 0.3,
+        "Med": 0.4,
+        "High": 0.3
+    },
+    "AlignmentSolvability": {
+        "Early|Good": {
+            "Easy": 0.1,
+            "Med": 0.3,
+            "Hard": 0.6
+        },
+        "Early|Med": {
+            "Easy": 0.1,
+            "Med": 0.2,
+            "Hard": 0.7
+        },
+        "Early|Poor": {
+            "Easy": 0.05,
+            "Med": 0.15,
+            "Hard": 0.8
+        },
+        "Mid|Good": {
+            "Easy": 0.2,
+            "Med": 0.4,
+            "Hard": 0.4
+        },
+        "Mid|Med": {
+            "Easy": 0.2,
+            "Med": 0.3,
+            "Hard": 0.5
+        },
+        "Mid|Poor": {
+            "Easy": 0.15,
+            "Med": 0.25,
+            "Hard": 0.6
+        },
+        "Late|Good": {
+            "Easy": 0.3,
+            "Med": 0.5,
+            "Hard": 0.2
+        },
+        "Late|Med": {
+            "Easy": 0.3,
+            "Med": 0.4,
+            "Hard": 0.3
+        },
+        "Late|Poor": {
+            "Easy": 0.3,
+            "Med": 0.3,
+            "Hard": 0.4
+        }
+    },
+    "Competition": {
+        "Good": {
+            "Low": 0.4,
+            "Med": 0.4,
+            "High": 0.2
+        },
+        "Med": {
+            "Low": 0.2,
+            "Med": 0.3,
+            "High": 0.5
+        },
+        "Poor": {
+            "Low": 0.05,
+            "Med": 0.15,
+            "High": 0.8
+        }
+    },
+    "WarningShot": {
+        "Good": {
+            "Low": 0.4,
+            "Med": 0.4,
+            "High": 0.2
+        },
+        "Med": {
+            "Low": 0.2,
+            "Med": 0.4,
+            "High": 0.4
+        },
+        "Poor": {
+            "Low": 0.1,
+            "Med": 0.3,
+            "High": 0.6
+        }
+    },
+    "Regulation": {
+        "Good|Low|Low": {
+            "High": 0.8,
+            "Med": 0.15,
+            "Low": 0.05
+        },
+        "Good|Low|Med": {
+            "High": 0.85,
+            "Med": 0.1,
+            "Low": 0.05
+        },
+        "Good|Low|High": {
+            "High": 0.9,
+            "Med": 0.08,
+            "Low": 0.02
+        },
+        "Good|Med|Low": {
+            "High": 0.7,
+            "Med": 0.2,
+            "Low": 0.1
+        },
+        "Good|Med|Med": {
+            "High": 0.75,
+            "Med": 0.15,
+            "Low": 0.1
+        },
+        "Good|Med|High": {
+            "High": 0.8,
+            "Med": 0.12,
+            "Low": 0.08
+        },
+        "Good|High|Low": {
+            "High": 0.5,
+            "Med": 0.3,
+            "Low": 0.2
+        },
+        "Good|High|Med": {
+            "High": 0.55,
+            "Med": 0.25,
+            "Low": 0.2
+        },
+        "Good|High|High": {
+            "High": 0.6,
+            "Med": 0.25,
+            "Low": 0.15
+        },
+        "Med|Low|Low": {
+            "High": 0.5,
+            "Med": 0.3,
+            "Low": 0.2
+        },
+        "Med|Low|Med": {
+            "High": 0.55,
+            "Med": 0.3,
+            "Low": 0.15
+        },
+        "Med|Low|High": {
+            "High": 0.6,
+            "Med": 0.25,
+            "Low": 0.15
+        },
+        "Med|Med|Low": {
+            "High": 0.3,
+            "Med": 0.4,
+            "Low": 0.3
+        },
+        "Med|Med|Med": {
+            "High": 0.35,
+            "Med": 0.4,
+            "Low": 0.25
+        },
+        "Med|Med|High": {
+            "High": 0.4,
+            "Med": 0.35,
+            "Low": 0.25
+        },
+        "Med|High|Low": {
+            "High": 0.1,
+            "Med": 0.4,
+            "Low": 0.5
+        },
+        "Med|High|Med": {
+            "High": 0.15,
+            "Med": 0.35,
+            "Low": 0.5
+        },
+        "Med|High|High": {
+            "High": 0.2,
+            "Med": 0.35,
+            "Low": 0.45
+        },
+        "Poor|Low|Low": {
+            "High": 0.2,
+            "Med": 0.4,
+            "Low": 0.4
+        },
+        "Poor|Low|Med": {
+            "High": 0.25,
+            "Med": 0.4,
+            "Low": 0.35
+        },
+        "Poor|Low|High": {
+            "High": 0.3,
+            "Med": 0.35,
+            "Low": 0.35
+        },
+        "Poor|Med|Low": {
+            "High": 0.1,
+            "Med": 0.3,
+            "Low": 0.6
+        },
+        "Poor|Med|Med": {
+            "High": 0.15,
+            "Med": 0.3,
+            "Low": 0.55
+        },
+        "Poor|Med|High": {
+            "High": 0.2,
+            "Med": 0.25,
+            "Low": 0.55
+        },
+        "Poor|High|Low": {
+            "High": 0.02,
+            "Med": 0.18,
+            "Low": 0.8
+        },
+        "Poor|High|Med": {
+            "High": 0.05,
+            "Med": 0.15,
+            "Low": 0.8
+        },
+        "Poor|High|High": {
+            "High": 0.1,
+            "Med": 0.15,
+            "Low": 0.75
+        }
+    },
+    "DeceptionRisk": {
+        "Easy": {
+            "Low": 0.6,
+            "Med": 0.3,
+            "High": 0.1
+        },
+        "Med": {
+            "Low": 0.2,
+            "Med": 0.4,
+            "High": 0.4
+        },
+        "Hard": {
+            "Low": 0.1,
+            "Med": 0.2,
+            "High": 0.7
+        }
+    },
+    "SelfReplication": {
+        "Early": {
+            "Low": 0.1,
+            "Med": 0.3,
+            "High": 0.6
+        },
+        "Mid": {
+            "Low": 0.3,
+            "Med": 0.4,
+            "High": 0.3
+        },
+        "Late": {
+            "Low": 0.6,
+            "Med": 0.3,
+            "High": 0.1
+        }
+    },
+    "PowerConcentration": {
+        "Low": {
+            "Low": 0.4,
+            "Med": 0.4,
+            "High": 0.2
+        },
+        "Med": {
+            "Low": 0.2,
+            "Med": 0.4,
+            "High": 0.4
+        },
+        "High": {
+            "Low": 0.1,
+            "Med": 0.3,
+            "High": 0.6
+        }
+    },
+    "ControlLossRisk": {
+        "Early|Low|Low": {
+            "Low": 0.35,
+            "Med": 0.4,
+            "High": 0.25
+        },
+        "Early|Low|Med": {
+            "Low": 0.25,
+            "Med": 0.4,
+            "High": 0.35
+        },
+        "Early|Low|High": {
+            "Low": 0.1,
+            "Med": 0.3,
+            "High": 0.6
+        },
+        "Early|Med|Low": {
+            "Low": 0.2,
+            "Med": 0.4,
+            "High": 0.4
+        },
+        "Early|Med|Med": {
+            "Low": 0.15,
+            "Med": 0.35,
+            "High": 0.5
+        },
+        "Early|Med|High": {
+            "Low": 0.05,
+            "Med": 0.25,
+            "High": 0.7
+        },
+        "Early|High|Low": {
+            "Low": 0.1,
+            "Med": 0.3,
+            "High": 0.6
+        },
+        "Early|High|Med": {
+            "Low": 0.05,
+            "Med": 0.25,
+            "High": 0.7
+        },
+        "Early|High|High": {
+            "Low": 0.02,
+            "Med": 0.18,
+            "High": 0.8
+        },
+        "Mid|Low|Low": {
+            "Low": 0.5,
+            "Med": 0.35,
+            "High": 0.15
+        },
+        "Mid|Low|Med": {
+            "Low": 0.4,
+            "Med": 0.35,
+            "High": 0.25
+        },
+        "Mid|Low|High": {
+            "Low": 0.2,
+            "Med": 0.3,
+            "High": 0.5
+        },
+        "Mid|Med|Low": {
+            "Low": 0.4,
+            "Med": 0.35,
+            "High": 0.25
+        },
+        "Mid|Med|Med": {
+            "Low": 0.3,
+            "Med": 0.35,
+            "High": 0.35
+        },
+        "Mid|Med|High": {
+            "Low": 0.15,
+            "Med": 0.3,
+            "High": 0.55
+        },
+        "Mid|High|Low": {
+            "Low": 0.3,
+            "Med": 0.3,
+            "High": 0.4
+        },
+        "Mid|High|Med": {
+            "Low": 0.2,
+            "Med": 0.3,
+            "High": 0.5
+        },
+        "Mid|High|High": {
+            "Low": 0.1,
+            "Med": 0.25,
+            "High": 0.65
+        },
+        "Late|Low|Low": {
+            "Low": 0.7,
+            "Med": 0.25,
+            "High": 0.05
+        },
+        "Late|Low|Med": {
+            "Low": 0.6,
+            "Med": 0.25,
+            "High": 0.15
+        },
+        "Late|Low|High": {
+            "Low": 0.4,
+            "Med": 0.3,
+            "High": 0.3
+        },
+        "Late|Med|Low": {
+            "Low": 0.6,
+            "Med": 0.25,
+            "High": 0.15
+        },
+        "Late|Med|Med": {
+            "Low": 0.5,
+            "Med": 0.3,
+            "High": 0.2
+        },
+        "Late|Med|High": {
+            "Low": 0.3,
+            "Med": 0.35,
+            "High": 0.35
+        },
+        "Late|High|Low": {
+            "Low": 0.5,
+            "Med": 0.25,
+            "High": 0.25
+        },
+        "Late|High|Med": {
+            "Low": 0.4,
+            "Med": 0.3,
+            "High": 0.3
+        },
+        "Late|High|High": {
+            "Low": 0.2,
+            "Med": 0.35,
+            "High": 0.45
+        }
+    },
+    "P_doom_2035": {
+        "Easy|High|Low": {
+            "Low": 0.7,
+            "Medium": 0.2,
+            "High": 0.07,
+            "VeryHigh": 0.03
+        },
+        "Easy|High|Med": {
+            "Low": 0.6,
+            "Medium": 0.25,
+            "High": 0.1,
+            "VeryHigh": 0.05
+        },
+        "Easy|High|High": {
+            "Low": 0.4,
+            "Medium": 0.3,
+            "High": 0.2,
+            "VeryHigh": 0.1
+        },
+        "Easy|Med|Low": {
+            "Low": 0.5,
+            "Medium": 0.3,
+            "High": 0.15,
+            "VeryHigh": 0.05
+        },
+        "Easy|Med|Med": {
+            "Low": 0.4,
+            "Medium": 0.35,
+            "High": 0.18,
+            "VeryHigh": 0.07
+        },
+        "Easy|Med|High": {
+            "Low": 0.25,
+            "Medium": 0.35,
+            "High": 0.25,
+            "VeryHigh": 0.15
+        },
+        "Easy|Low|Low": {
+            "Low": 0.3,
+            "Medium": 0.4,
+            "High": 0.2,
+            "VeryHigh": 0.1
+        },
+        "Easy|Low|Med": {
+            "Low": 0.2,
+            "Medium": 0.4,
+            "High": 0.25,
+            "VeryHigh": 0.15
+        },
+        "Easy|Low|High": {
+            "Low": 0.1,
+            "Medium": 0.3,
+            "High": 0.35,
+            "VeryHigh": 0.25
+        },
+        "Med|High|Low": {
+            "Low": 0.3,
+            "Medium": 0.4,
+            "High": 0.2,
+            "VeryHigh": 0.1
+        },
+        "Med|High|Med": {
+            "Low": 0.2,
+            "Medium": 0.4,
+            "High": 0.25,
+            "VeryHigh": 0.15
+        },
+        "Med|High|High": {
+            "Low": 0.1,
+            "Medium": 0.3,
+            "High": 0.35,
+            "VeryHigh": 0.25
+        },
+        "Med|Med|Low": {
+            "Low": 0.2,
+            "Medium": 0.35,
+            "High": 0.3,
+            "VeryHigh": 0.15
+        },
+        "Med|Med|Med": {
+            "Low": 0.1,
+            "Medium": 0.35,
+            "High": 0.35,
+            "VeryHigh": 0.2
+        },
+        "Med|Med|High": {
+            "Low": 0.05,
+            "Medium": 0.25,
+            "High": 0.4,
+            "VeryHigh": 0.3
+        },
+        "Med|Low|Low": {
+            "Low": 0.1,
+            "Medium": 0.3,
+            "High": 0.35,
+            "VeryHigh": 0.25
+        },
+        "Med|Low|Med": {
+            "Low": 0.05,
+            "Medium": 0.25,
+            "High": 0.4,
+            "VeryHigh": 0.3
+        },
+        "Med|Low|High": {
+            "Low": 0.02,
+            "Medium": 0.18,
+            "High": 0.45,
+            "VeryHigh": 0.35
+        },
+        "Hard|High|Low": {
+            "Low": 0.1,
+            "Medium": 0.2,
+            "High": 0.4,
+            "VeryHigh": 0.3
+        },
+        "Hard|High|Med": {
+            "Low": 0.05,
+            "Medium": 0.15,
+            "High": 0.45,
+            "VeryHigh": 0.35
+        },
+        "Hard|High|High": {
+            "Low": 0.02,
+            "Medium": 0.1,
+            "High": 0.48,
+            "VeryHigh": 0.4
+        },
+        "Hard|Med|Low": {
+            "Low": 0.05,
+            "Medium": 0.15,
+            "High": 0.45,
+            "VeryHigh": 0.35
+        },
+        "Hard|Med|Med": {
+            "Low": 0.03,
+            "Medium": 0.12,
+            "High": 0.5,
+            "VeryHigh": 0.35
+        },
+        "Hard|Med|High": {
+            "Low": 0.01,
+            "Medium": 0.09,
+            "High": 0.5,
+            "VeryHigh": 0.4
+        },
+        "Hard|Low|Low": {
+            "Low": 0.02,
+            "Medium": 0.1,
+            "High": 0.53,
+            "VeryHigh": 0.35
+        },
+        "Hard|Low|Med": {
+            "Low": 0.01,
+            "Medium": 0.07,
+            "High": 0.52,
+            "VeryHigh": 0.4
+        },
+        "Hard|Low|High": {
+            "Low": 0.0,
+            "Medium": 0.05,
+            "High": 0.5,
+            "VeryHigh": 0.45
+        }
+    }
+}
