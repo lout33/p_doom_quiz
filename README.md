@@ -1,27 +1,18 @@
-# P(doom) Calculator Web App
-
-This is a web-based version of the P(doom) Calculator, an educational tool that helps users estimate their probability of AI doom and compare their views with AI experts.
-
-## Overview
-
-P(doom) represents the probability of an existential catastrophe from artificial intelligence within approximately 100 years. This app helps you:
-
-- Calculate your own P(doom) through a series of questions about AI development timelines, safety research, governance, and risk scenarios
-- Apply weighted factors and conditional logic to your answers for nuanced predictions
-- View projections for multiple timeframes (2035, 2050, and 2100)
-- Compare your results to prominent AI experts like Yudkowsky, Hinton, Altman, and others for each timeframe
-- Visualize how your estimate compares across the expert spectrum with interactive charts
-- Understand which factors contributed most to your estimate
-
 ## Features
 
-- Interactive quiz with real-time P(doom) meter
-- Detailed results breakdown showing contribution of each answer
-- Multi-year projections (2035, 2050, 2100) with different visualization options
-- Expert comparison for each timeframe with probability ranges
-- Chart visualization comparing your estimate to experts
-- Category analysis showing which risk areas concern you most
-- Social sharing options to discuss your results with others
+
+
+1.  **Estimates AI Risk (P(doom)):** The main goal is to estimate the probability of AI-related existential catastrophe ("P(doom)"), specifically focusing on the year **2035**.
+2.  **Interactive Quiz:** It asks the user a series of questions about factors believed to influence AI risk (like development timelines, alignment difficulty, regulation, etc.).
+3.  **Manual Bayesian Network:** It simulates the logic of a simplified Bayesian Network based on the user's answers without relying on specialized libraries like `pgmpy`.
+4.  **External Configuration:** The network's internal probabilities (CPTs) are loaded from an external `bn_cpts.json` file, allowing easier modification without changing the script code.
+5.  **Sensitivity Analysis (2035):** It calculates and displays the P(doom by 2035) not just as a single number, but as a *range* (Lower Bound, Central Estimate, Upper Bound) based on a simple sensitivity analysis.
+6.  **Heuristic Future Estimates (2050 & 2100):** It provides *rough, rule-based estimates* for P(doom) by **2050** and **2100**, extrapolating from the 2035 result and the calculated AI development timeline.
+7.  **Expert Data Comparison:** It loads P(doom) estimates from various experts stored in a CSV file (`experts_pdoom.csv`) and compares the user's calculated estimates (for 2035, and the heuristic 2050/2100 guesses) to the closest expert opinion for each timeframe.
+8.  **Step-by-Step Feedback:** Shows how the P(doom by 2035) estimate changes after each question the user answers.
+9. Visualize bar chart how your estimate compares across the expert spectrum
+
+
 
 ## Getting Started
 
