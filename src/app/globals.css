@@ -29,3 +29,215 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Flame and Doom Animations */
+@keyframes flameFlicker {
+  0%, 100% { opacity: 1; transform: scale(1) translateY(0); }
+  25% { opacity: 0.9; transform: scale(1.05) translateY(-2px); }
+  50% { opacity: 0.95; transform: scale(0.98) translateY(1px); }
+  75% { opacity: 0.92; transform: scale(1.03) translateY(-1px); }
+}
+
+@keyframes emberRise {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(20px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes doomPulse {
+  0%, 100% {
+    text-shadow:
+      0 0 10px rgba(239, 68, 68, 0.8),
+      0 0 20px rgba(239, 68, 68, 0.6),
+      0 0 30px rgba(239, 68, 68, 0.4),
+      0 0 40px rgba(220, 38, 38, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 20px rgba(239, 68, 68, 1),
+      0 0 30px rgba(239, 68, 68, 0.8),
+      0 0 40px rgba(239, 68, 68, 0.6),
+      0 0 60px rgba(220, 38, 38, 0.5);
+  }
+}
+
+@keyframes doomPulseOnce {
+  0% {
+    text-shadow:
+      0 0 10px rgba(239, 68, 68, 0.8),
+      0 0 20px rgba(239, 68, 68, 0.6),
+      0 0 30px rgba(239, 68, 68, 0.4),
+      0 0 40px rgba(220, 38, 38, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 20px rgba(239, 68, 68, 1),
+      0 0 30px rgba(239, 68, 68, 0.8),
+      0 0 40px rgba(239, 68, 68, 0.6),
+      0 0 60px rgba(220, 38, 38, 0.5);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba(239, 68, 68, 0.9),
+      0 0 25px rgba(239, 68, 68, 0.7),
+      0 0 35px rgba(239, 68, 68, 0.5),
+      0 0 50px rgba(220, 38, 38, 0.4);
+  }
+}
+
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2px, 2px); }
+  20% { transform: translate(2px, -2px); }
+  30% { transform: translate(-2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  50% { transform: translate(-2px, 2px); }
+  60% { transform: translate(2px, -2px); }
+  70% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+  90% { transform: translate(-2px, 2px); }
+}
+
+@keyframes flameGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(239, 68, 68, 0.5),
+      0 0 40px rgba(239, 68, 68, 0.3),
+      inset 0 0 20px rgba(239, 68, 68, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(239, 68, 68, 0.8),
+      0 0 60px rgba(239, 68, 68, 0.5),
+      inset 0 0 30px rgba(239, 68, 68, 0.3);
+  }
+}
+
+@keyframes flickerLight {
+  0%, 100% { opacity: 0.1; }
+  10% { opacity: 0.15; }
+  20% { opacity: 0.08; }
+  30% { opacity: 0.12; }
+  40% { opacity: 0.1; }
+  50% { opacity: 0.14; }
+  60% { opacity: 0.09; }
+  70% { opacity: 0.13; }
+  80% { opacity: 0.11; }
+  90% { opacity: 0.15; }
+}
+
+/* Ember particle styling */
+.ember-particle {
+  position: absolute;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(251, 146, 60, 1) 0%, rgba(239, 68, 68, 0.8) 50%, transparent 70%);
+  border-radius: 50%;
+  animation: emberRise linear infinite;
+  pointer-events: none;
+}
+
+/* Doom text effect classes */
+.doom-text-low {
+  animation: flameFlicker 3s ease-in-out infinite;
+  text-shadow:
+    0 0 10px rgba(251, 191, 36, 0.6),
+    0 0 20px rgba(245, 158, 11, 0.4),
+    0 0 30px rgba(217, 119, 6, 0.3);
+}
+
+.doom-text-medium {
+  animation: flameFlicker 2.5s ease-in-out infinite, doomPulse 3s ease-in-out infinite;
+  text-shadow:
+    0 0 15px rgba(251, 146, 60, 0.8),
+    0 0 25px rgba(249, 115, 22, 0.6),
+    0 0 35px rgba(234, 88, 12, 0.4);
+}
+
+.doom-text-high {
+  animation: flameFlicker 2s ease-in-out infinite, doomPulse 2.5s ease-in-out infinite;
+  text-shadow:
+    0 0 20px rgba(239, 68, 68, 1),
+    0 0 30px rgba(220, 38, 38, 0.8),
+    0 0 40px rgba(185, 28, 28, 0.6),
+    0 0 60px rgba(153, 27, 27, 0.4);
+}
+
+.doom-text-extreme {
+  animation: flameFlicker 1.5s ease-in-out infinite, doomPulse 2s ease-in-out infinite, screenShake 0.5s ease-in-out infinite;
+  text-shadow:
+    0 0 25px rgba(239, 68, 68, 1),
+    0 0 40px rgba(220, 38, 38, 1),
+    0 0 60px rgba(185, 28, 28, 0.8),
+    0 0 80px rgba(153, 27, 27, 0.6),
+    0 0 100px rgba(127, 29, 29, 0.4);
+}
+
+/* Flame gradient backgrounds */
+.flame-gradient-low {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+  background-size: 200% 200%;
+  animation: flameGradient 3s ease infinite;
+}
+
+.flame-gradient-medium {
+  background: linear-gradient(135deg, #fb923c, #f97316, #ea580c);
+  background-size: 200% 200%;
+  animation: flameGradient 2.5s ease infinite;
+}
+
+.flame-gradient-high {
+  background: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
+  background-size: 200% 200%;
+  animation: flameGradient 2s ease infinite;
+}
+
+.flame-gradient-extreme {
+  background: linear-gradient(135deg, #dc2626, #b91c1c, #991b1b, #7f1d1d);
+  background-size: 200% 200%;
+  animation: flameGradient 1.5s ease infinite, glowPulse 2s ease-in-out infinite;
+}
+
+/* Apocalyptic background overlay */
+.apocalyptic-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 100%, rgba(127, 29, 29, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: flickerLight 4s ease-in-out infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .ember-particle {
+    display: none;
+  }
+}

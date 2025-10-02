@@ -7,12 +7,16 @@ import { Question, questions } from '../lib/question-data';
 import { Evidence } from '../lib/bayes-network';
 import QuestionCard from '../components/QuestionCard';
 import ProgressBar from '../components/ProgressBar';
+import EmberParticles from '../components/EmberParticles';
+import LiveDoomMeter from '../components/LiveDoomMeter';
 
 export default function QuizPage() {
   const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userEvidence, setUserEvidence] = useState<Evidence>({});
   const [intermediateResults, setIntermediateResults] = useState<{[key: string]: number} | null>(null);
+  const [previousDoom, setPreviousDoom] = useState(0);
+  const [currentDoom, setCurrentDoom] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [nickname, setNickname] = useState('');
   const [showNicknameInput, setShowNicknameInput] = useState(true);
@@ -61,9 +65,11 @@ export default function QuizPage() {
     localStorage.setItem('pdoom_evidence', JSON.stringify(newEvidence));
     logEvidence(newEvidence, 'quiz selection');
     
-    // Calculate intermediate results
+    // Calculate intermediate results and update doom meter
     const results = calculateResults(newEvidence);
     if (results) {
+      setPreviousDoom(currentDoom);
+      setCurrentDoom(results.pdoom2035.central);
       setIntermediateResults({
         central: results.pdoom2035.central,
         lower: results.pdoom2035.lower,
@@ -99,7 +105,7 @@ export default function QuizPage() {
       <div className="min-h-screen py-8 px-4 bg-gray-900 flex items-center justify-center">
         <div className="max-w-md w-full">
           <div className="bg-gray-800 rounded-lg shadow-md p-8 border border-gray-700">
-            <h1 className="text-3xl font-bold mb-2 text-center text-gray-100">Welcome to P(doom)</h1>
+            <h1 className="text-3xl font-bold mb-2 text-center text-red-400 doom-text-static-high">Welcome to P(doom)</h1>
             <p className="text-center text-gray-400 mb-8">Enter your nickname to get started</p>
             
             <form onSubmit={handleNicknameSubmit}>
@@ -114,7 +120,7 @@ export default function QuizPage() {
                   onChange={(e) => setNickname(e.target.value)}
                   placeholder="Enter 2-20 characters"
                   maxLength={20}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-gray-900 border border-red-900/50 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   autoFocus
                 />
                 <p className="text-xs text-gray-500 mt-2">
@@ -127,8 +133,8 @@ export default function QuizPage() {
                 disabled={nickname.trim().length < 2}
                 className={`w-full py-3 rounded-lg font-semibold transition-all ${
                   nickname.trim().length >= 2
-                    ? 'bg-blue-700 hover:bg-blue-600 text-white shadow-md hover:shadow-lg'
-                    : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    ? 'flame-gradient-high text-white shadow-2xl hover:shadow-red-900/50 border-2 border-red-600'
+                    : 'bg-gray-700 text-gray-500 cursor-not-allowed border-2 border-gray-600'
                 }`}
               >
                 Continue to Quiz
@@ -141,99 +147,84 @@ export default function QuizPage() {
   }
   
   return (
-    <div className="min-h-screen py-8 px-4 bg-gray-900">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-3xl font-bold text-gray-100">P(doom) Calculator</h1>
-          <div className="text-sm text-gray-400">
-            Welcome, <span className="text-blue-400 font-semibold">{nickname}</span>
-          </div>
-        </div>
-        <p className="text-center text-gray-400 mb-8">Answer questions about AI risk factors to calculate existential risk probability</p>
-        
-        <div className="mb-8">
-          <ProgressBar 
-            progress={progress} 
-            currentQuestion={currentQuestionIndex + 1} 
-            totalQuestions={quizQuestions.length} 
-          />
-        </div>
-        
-        <div className={`transition-all duration-500 transform ${
-          isTransitioning ? 'opacity-0 translate-x-full' : 'opacity-100 translate-x-0'
-        }`}>
-          {currentQuestion && (
-            <QuestionCard 
-              question={currentQuestion}
-              onOptionSelect={(optionValue) => handleOptionSelect(currentQuestion, optionValue)}
-            />
-          )}
-        </div>
-        
-        {intermediateResults && (
-          <div className="mt-8 p-6 bg-gray-800 rounded-lg shadow-md border border-gray-700 transition-all duration-500">
-            <h3 className="font-semibold mb-3 text-gray-200">Current P(doom) Estimate:</h3>
-            <div className="flex items-center mb-4">
-              <div className={`text-4xl font-bold ${getProbabilityColor(intermediateResults.central)}`}>
-                {intermediateResults.central.toFixed(1)}%
-              </div>
-              <div className="ml-4 text-gray-400 text-sm">
-                Range: {intermediateResults.lower.toFixed(1)}% - {intermediateResults.upper.toFixed(1)}%
+    <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-black via-gray-900 to-red-950/20 relative overflow-hidden">
+      <div className="apocalyptic-overlay" />
+      <EmberParticles count={15} />
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Main quiz content */}
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <h1 className="text-3xl font-bold text-red-400 doom-text-static-medium">P(doom) Calculator</h1>
+              <div className="text-sm text-gray-400">
+                Welcome, <span className="text-red-400 font-semibold">{nickname}</span>
               </div>
             </div>
+            <p className="text-center text-gray-400 mb-8">Answer questions about AI risk factors to calculate existential risk probability</p>
             
-            {/* Visual probability bar */}
-            <div className="w-full h-5 bg-gray-700 rounded-full overflow-hidden mb-3">
-              <div 
-                className="h-full transition-all duration-700 ease-in-out"
-                style={{ 
-                  width: `${intermediateResults.central}%`,
-                  background: `linear-gradient(90deg, 
-                    rgba(167, 139, 250, 0.9) 0%, 
-                    rgba(236, 72, 153, 0.9) 33%, 
-                    rgba(249, 115, 22, 0.9) 66%, 
-                    rgba(220, 38, 38, 0.9) 100%)`
-                }}
-              ></div>
+            <div className="mb-8">
+              <ProgressBar
+                progress={progress}
+                currentQuestion={currentQuestionIndex + 1}
+                totalQuestions={quizQuestions.length}
+              />
             </div>
             
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>0%</span>
-              <span>25%</span>
-              <span>50%</span>
-              <span>75%</span>
-              <span>100%</span>
+            <div className={`transition-all duration-500 transform ${
+              isTransitioning ? 'opacity-0 scale-95 translate-y-4' : 'opacity-100 scale-100 translate-y-0'
+            }`}>
+              {currentQuestion && (
+                <QuestionCard
+                  question={currentQuestion}
+                  onOptionSelect={(optionValue) => handleOptionSelect(currentQuestion, optionValue)}
+                />
+              )}
             </div>
             
-            <p className="text-sm text-gray-400 mt-4">
-              This intermediate result shows the current P(doom) calculation based on your answers so far.
-            </p>
+            <div className="mt-8 flex justify-between">
+              <button
+                onClick={() => currentQuestionIndex > 0 && setCurrentQuestionIndex(prev => prev - 1)}
+                disabled={currentQuestionIndex === 0}
+                className={`px-4 py-2 rounded-md transition-all ${
+                  currentQuestionIndex === 0
+                    ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                    : 'bg-gray-700 text-gray-200 shadow hover:shadow-md hover:bg-gray-600'
+                }`}
+              >
+                Previous
+              </button>
+              
+              <button
+                onClick={() => router.push('/results')}
+                className="px-4 py-2 flame-gradient-medium text-white rounded-md hover:shadow-lg transition-all border-2 border-orange-600"
+              >
+                Skip to Results
+              </button>
+            </div>
           </div>
-        )}
-        
-        <div className="mt-8 flex justify-between">
-          <button
-            onClick={() => currentQuestionIndex > 0 && setCurrentQuestionIndex(prev => prev - 1)}
-            disabled={currentQuestionIndex === 0}
-            className={`px-4 py-2 rounded-md transition-all ${
-              currentQuestionIndex === 0 
-                ? 'bg-gray-800 text-gray-500 cursor-not-allowed' 
-                : 'bg-gray-700 text-gray-200 shadow hover:shadow-md hover:bg-gray-600'
-            }`}
-          >
-            Previous
-          </button>
           
-          <div className="text-sm text-gray-400">
-            Question {currentQuestionIndex + 1} of {quizQuestions.length}
+          {/* Live Doom Meter Sidebar */}
+          <div className="lg:w-80">
+            <div className="sticky top-8">
+              <LiveDoomMeter
+                currentDoom={currentDoom}
+                previousDoom={previousDoom}
+              />
+              
+              {/* Show intermediate result info */}
+              {intermediateResults && (
+                <div className="mt-6 bg-gray-900/90 backdrop-blur-sm rounded-xl p-4 border-2 border-gray-700">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 mb-2">Current Range</p>
+                    <p className="text-sm text-gray-300">
+                      {intermediateResults.lower.toFixed(1)}% - {intermediateResults.upper.toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          
-          <button
-            onClick={() => router.push('/results')}
-            className="px-4 py-2 bg-blue-900 text-blue-200 rounded-md hover:bg-blue-800 transition-all shadow hover:shadow-md"
-          >
-            Skip to Results
-          </button>
         </div>
       </div>
     </div>

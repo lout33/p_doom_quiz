@@ -9,10 +9,10 @@ import ExpertModal from './ExpertModal';
 const BAR_HEIGHT = 32;
 const BAR_GAP = 10;
 const BAR_COLORS = {
-  low: '#9333ea', // purple-600
-  medium: '#ec4899', // pink-500 
-  high: '#f97316', // orange-500
-  veryHigh: '#dc2626', // red-600
+  low: '#fbbf24', // yellow-400 - DOOM THEME
+  medium: '#fb923c', // orange-400 - DOOM THEME
+  high: '#ef4444', // red-500 - DOOM THEME
+  veryHigh: '#dc2626', // red-600 - DOOM THEME
   user: '#3b82f6', // blue-500
 };
 
@@ -67,7 +67,7 @@ export default function ResultsChart({ results, nickname }: ResultsChartProps) {
   // Calculate total height based on number of items
   const chartHeight = (BAR_HEIGHT + BAR_GAP) * allData.length + 50;
   
-  // Determine color based on probability value
+  // Determine color based on probability value - DOOM THEME
   const getBarColor = (value: number | null, isUser: boolean = false) => {
     if (isUser) return BAR_COLORS.user;
     if (value === null) return '#4b5563'; // gray-600
@@ -75,6 +75,15 @@ export default function ResultsChart({ results, nickname }: ResultsChartProps) {
     if (value < 30) return BAR_COLORS.medium;
     if (value < 60) return BAR_COLORS.high;
     return BAR_COLORS.veryHigh;
+  };
+  
+  // Get flame gradient class for bars
+  const getFlameGradientClass = (value: number | null) => {
+    if (value === null) return '';
+    if (value < 10) return 'flame-gradient-low';
+    if (value < 30) return 'flame-gradient-medium';
+    if (value < 60) return 'flame-gradient-high';
+    return 'flame-gradient-extreme';
   };
   
   return (
@@ -150,19 +159,23 @@ export default function ResultsChart({ results, nickname }: ResultsChartProps) {
                   <span className="truncate">{item.name}</span>
                 </div>
                 <div className="flex-1 relative h-8">
-                  <div className="absolute inset-y-0 left-0 bg-gray-700 w-full rounded-full"></div>
-                  <div 
+                  <div className="absolute inset-y-0 left-0 bg-gray-800 w-full rounded-full border border-gray-700"></div>
+                  <div
                     className={`absolute inset-y-0 left-0 rounded-full transition-all duration-1000 ${
                       animateIn ? 'opacity-100' : 'opacity-0 scale-x-0'
-                    }`}
-                    style={{ 
+                    } ${!item.isUser && value !== null ? getFlameGradientClass(value) : ''}`}
+                    style={{
                       width: `${displayValue}%`,
-                      backgroundColor: barColor,
+                      backgroundColor: item.isUser || value === null ? barColor : undefined,
                       transformOrigin: 'left',
+                      boxShadow: value !== null && value >= 60 ? '0 0 20px rgba(220, 38, 38, 0.6)' : undefined
                     }}
                   >
                     {item.isUser && (
-                      <div className="w-full h-full opacity-30 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.2)_10px,rgba(255,255,255,0.2)_20px)]"></div>
+                      <>
+                        <div className="w-full h-full opacity-30 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.2)_10px,rgba(255,255,255,0.2)_20px)]"></div>
+                        <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+                      </>
                     )}
                   </div>
                   <span className={`text-sm font-medium absolute right-0 top-0 bottom-0 flex items-center pr-2 transition-opacity duration-500 text-gray-200 ${

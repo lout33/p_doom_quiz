@@ -24,6 +24,96 @@ export default function QuestionCard({ question, onOptionSelect }: QuestionCardP
     }, 400);
   };
   
+  // Get level icon
+  const getLevelIcon = () => {
+    if (question.level === 1) return '⚠️';
+    if (question.level === 2) return '🔥';
+    return '☠️';
+  };
+  
+  // Get level color scheme
+  const getLevelColors = () => {
+    if (question.level === 1) return {
+      border: 'border-yellow-900/50',
+      bg: 'bg-yellow-900/10',
+      text: 'text-yellow-400'
+    };
+    if (question.level === 2) return {
+      border: 'border-orange-900/50',
+      bg: 'bg-orange-900/10',
+      text: 'text-orange-400'
+    };
+    return {
+      border: 'border-red-900/50',
+      bg: 'bg-red-900/10',
+      text: 'text-red-400'
+    };
+  };
+  
+  // Determine option risk level and colors
+  const getOptionColors = (optionLabel: string) => {
+    const label = optionLabel.toLowerCase();
+    
+    // Safe/positive options (green)
+    if (label.includes('very unlikely') || label.includes('strongly disagree') ||
+        label.includes('very low') || label.includes('minimal')) {
+      return {
+        border: 'border-green-700',
+        hover: 'hover:border-green-500 hover:bg-green-900/20',
+        selected: 'border-green-500 bg-green-900/30',
+        glow: 'shadow-green-500/50',
+        radio: 'border-green-500 bg-green-500'
+      };
+    }
+    
+    // Moderate options (yellow)
+    if (label.includes('unlikely') || label.includes('disagree') ||
+        label.includes('low') || label.includes('somewhat')) {
+      return {
+        border: 'border-yellow-700',
+        hover: 'hover:border-yellow-500 hover:bg-yellow-900/20',
+        selected: 'border-yellow-500 bg-yellow-900/30',
+        glow: 'shadow-yellow-500/50',
+        radio: 'border-yellow-500 bg-yellow-500'
+      };
+    }
+    
+    // Concerning options (orange)
+    if (label.includes('likely') || label.includes('agree') ||
+        label.includes('high') || label.includes('significant')) {
+      return {
+        border: 'border-orange-700',
+        hover: 'hover:border-orange-500 hover:bg-orange-900/20',
+        selected: 'border-orange-500 bg-orange-900/30',
+        glow: 'shadow-orange-500/50',
+        radio: 'border-orange-500 bg-orange-500'
+      };
+    }
+    
+    // Critical options (red)
+    if (label.includes('very likely') || label.includes('strongly agree') ||
+        label.includes('very high') || label.includes('extreme')) {
+      return {
+        border: 'border-red-700',
+        hover: 'hover:border-red-500 hover:bg-red-900/20',
+        selected: 'border-red-500 bg-red-900/30',
+        glow: 'shadow-red-500/50',
+        radio: 'border-red-500 bg-red-500'
+      };
+    }
+    
+    // Default (gray)
+    return {
+      border: 'border-gray-700',
+      hover: 'hover:border-gray-500 hover:bg-gray-700/50',
+      selected: 'border-gray-500 bg-gray-700/50',
+      glow: 'shadow-gray-500/50',
+      radio: 'border-gray-500 bg-gray-500'
+    };
+  };
+  
+  const levelColors = getLevelColors();
+  
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700 transition-all duration-500 hover:shadow-xl">
       <div className="mb-6 pb-4 border-b border-gray-700">

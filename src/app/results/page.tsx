@@ -8,12 +8,15 @@ import { analyzePDoom, formatProbRange, PDoomResults } from '../lib/bayes-networ
 import { findClosestExpert } from '../lib/data-service';
 import ResultsChart from '../components/ResultsChart';
 import { Evidence } from '../lib/bayes-network';
+import FlameEffect from '../components/FlameEffect';
+import EmberParticles from '../components/EmberParticles';
 
 export default function ResultsPage() {
   const [results, setResults] = useState<PDoomResults | null>(null);
   const [loading, setLoading] = useState(true);
   const [animate, setAnimate] = useState(false);
   const [nickname, setNickname] = useState<string>('');
+  const [useStaticText, setUseStaticText] = useState(false);
   
   useEffect(() => {
     // Load evidence from localStorage
@@ -39,6 +42,9 @@ export default function ResultsPage() {
       
       // Trigger animations after a small delay
       setTimeout(() => setAnimate(true), 100);
+      
+      // Switch to static text after 2 seconds for readability
+      setTimeout(() => setUseStaticText(true), 2100);
     }
     
     // Load nickname
@@ -48,24 +54,39 @@ export default function ResultsPage() {
     }
   }, []);
   
-  // Determine probability color based on value
+  // Determine probability color based on value - DOOM THEME
   const getProbabilityColor = (value: number | null) => {
     if (value === null) return 'text-gray-400';
-    if (value < 10) return 'text-purple-400';
-    if (value < 30) return 'text-pink-400';
-    if (value < 60) return 'text-orange-400';
-    return 'text-red-400';
+    if (value < 10) return 'text-yellow-400';
+    if (value < 30) return 'text-orange-400';
+    if (value < 60) return 'text-red-500';
+    return 'text-red-600';
   };
   
-  // Create a linear gradient based on probability
+  // Determine doom text effect class (switches to static after animation)
+  const getDoomTextClass = (value: number | null) => {
+    if (value === null) return '';
+    const prefix = useStaticText ? 'doom-text-static-' : 'doom-text-';
+    if (value < 10) return prefix + 'low';
+    if (value < 30) return prefix + 'medium';
+    if (value < 60) return prefix + 'high';
+    return prefix + 'extreme';
+  };
+  
+  // Create a flame gradient based on probability - DOOM THEME
   const getProbabilityGradient = (value: number | null) => {
     if (value === null) return 'bg-gray-700';
-    return `bg-gradient-to-r ${
-      value < 10 ? 'from-purple-600 to-purple-700' :
-      value < 30 ? 'from-pink-500 to-pink-600' :
-      value < 60 ? 'from-orange-600 to-orange-700' :
-      'from-red-600 to-red-700'
-    }`;
+    if (value < 10) return 'flame-gradient-low';
+    if (value < 30) return 'flame-gradient-medium';
+    if (value < 60) return 'flame-gradient-high';
+    return 'flame-gradient-extreme';
+  };
+  
+  // Get flame intensity
+  const getFlameIntensity = (value: number | null): 'low' | 'medium' | 'high' => {
+    if (value === null || value < 30) return 'low';
+    if (value < 60) return 'medium';
+    return 'high';
   };
   
   // Function to start a new quiz
@@ -144,7 +165,13 @@ Calculate yours at: ${window.location.origin}`;
   };
   
   return (
-    <div className="min-h-screen py-8 px-4 bg-gray-900">
+    <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-black via-gray-900 to-red-950/20 relative overflow-hidden">
+      {/* Apocalyptic overlay */}
+      <div className="apocalyptic-overlay" />
+      
+      {/* Ember particles */}
+      <EmberParticles count={results ? Math.min(50, Math.floor((results.pdoom2035.central / 2))) : 20} />
+      
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2 text-gray-100">Your P(doom) Results</h1>
@@ -155,25 +182,46 @@ Calculate yours at: ${window.location.origin}`;
         </div>
         
         {/* Main results card with animation */}
-        <div className={`bg-gray-800 rounded-lg shadow-md p-8 mb-8 border border-gray-700 transition-all duration-1000 transform ${
+        <div className={`bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-2xl p-8 mb-8 border-2 ${
+          results.pdoom2035.central >= 60 ? 'border-red-600' :
+          results.pdoom2035.central >= 30 ? 'border-orange-600' : 'border-gray-700'
+        } transition-all duration-1000 transform relative overflow-hidden ${
           animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
-          <h2 className="text-2xl font-semibold mb-2 text-gray-100">P(doom) by 2035</h2>
-          <p className="text-sm text-gray-400 mb-6">
-            Based on the Bayesian Network model and your responses to key AI risk factors
-          </p>
+          {/* Flame effect background */}
+          <div className="absolute top-0 left-0 right-0 opacity-20">
+            <FlameEffect
+              intensity={getFlameIntensity(results.pdoom2035.central)}
+              size="medium"
+            />
+          </div>
           
-          <div className="flex flex-col md:flex-row items-center mb-6">
-            <div className={`text-6xl font-bold mb-4 md:mb-0 ${getProbabilityColor(results.pdoom2035.central)}`}>
-              {results.pdoom2035.central.toFixed(1)}%
-            </div>
-            <div className="ml-0 md:ml-6 text-gray-400 text-center md:text-left">
-              <div className="mb-2">
-                <span className="font-medium">Range:</span> {results.pdoom2035.lower.toFixed(1)}% - {results.pdoom2035.upper.toFixed(1)}%
+          <div className="relative z-10">
+            <h2 className="text-2xl font-semibold mb-2 text-gray-100">P(doom) by 2035</h2>
+            <p className="text-sm text-gray-400 mb-6">
+              Based on the Bayesian Network model and your responses to key AI risk factors
+            </p>
+            
+            <div className="flex flex-col md:flex-row items-center mb-6">
+              <div className={`text-7xl md:text-8xl font-bold mb-4 md:mb-0 ${getProbabilityColor(results.pdoom2035.central)} ${getDoomTextClass(results.pdoom2035.central)}`}>
+                {results.pdoom2035.central.toFixed(1)}%
               </div>
-              <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div className={`h-full ${getProbabilityGradient(results.pdoom2035.central)}`} 
-                     style={{width: `${results.pdoom2035.central}%`}}></div>
+              <div className="ml-0 md:ml-6 text-gray-400 text-center md:text-left flex-1">
+                <div className="mb-3">
+                  <span className="font-medium text-gray-300">Range:</span>
+                  <span className="ml-2 text-lg font-semibold text-gray-200">
+                    {results.pdoom2035.lower.toFixed(1)}% - {results.pdoom2035.upper.toFixed(1)}%
+                  </span>
+                </div>
+                <div className="w-full bg-gray-900 h-6 rounded-full overflow-hidden border-2 border-gray-700 shadow-inner relative">
+                  <div
+                    className={`h-full ${getProbabilityGradient(results.pdoom2035.central)} transition-all duration-1000 shadow-lg`}
+                    style={{width: animate ? `${results.pdoom2035.central}%` : '0%'}}
+                  >
+                    {/* Inner glow effect */}
+                    <div className="w-full h-full opacity-50 bg-gradient-to-t from-white/30 to-transparent" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -201,69 +249,94 @@ Calculate yours at: ${window.location.origin}`;
         </div>
         
         {/* Future Projections */}
-        <div className={`bg-gray-800 rounded-lg shadow-md p-8 mb-8 border border-gray-700 transition-all duration-1000 transform ${
+        <div className={`bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-2xl p-8 mb-8 border-2 border-gray-700 transition-all duration-1000 transform relative overflow-hidden ${
           animate ? 'opacity-100 translate-y-0 delay-300' : 'opacity-0 translate-y-10'
         }`}>
-          <h2 className="text-2xl font-semibold mb-2 text-gray-100">Future Projections</h2>
-          <p className="text-sm text-gray-400 mb-6">
-            Heuristic estimates based on your 2035 result and {results.mostLikelyTimeline || 'Mid'} timeline
-          </p>
+          {/* Subtle flame background */}
+          <div className="absolute top-0 left-0 right-0 opacity-10">
+            <FlameEffect intensity="low" size="small" />
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-6 bg-gray-900 rounded-lg border border-gray-700">
-              <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2040</h3>
-              <div className={`text-4xl font-bold ${getProbabilityColor(results.pdoom2040.central)}`}>
-                {results.pdoom2040.central?.toFixed(1) || 'N/A'}%
-              </div>
-              <div className="text-sm text-gray-400 mt-2 mb-3">
-                Range: {results.pdoom2040.lower?.toFixed(1) || 'N/A'}% -
-                {results.pdoom2040.upper?.toFixed(1) || 'N/A'}%
-              </div>
-              
-              <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div className={`h-full ${getProbabilityGradient(results.pdoom2040.central)}`}
-                     style={{width: `${results.pdoom2040.central || 0}%`}}></div>
-              </div>
-              
-              {closestExpert2040 && (
-                <div className="mt-4 bg-gray-800 p-3 rounded shadow-sm border border-gray-700">
-                  <div className="text-sm text-gray-300">
-                    Closest to <strong>{closestExpert2040.name}</strong>
-                    ({closestExpert2040.pdoom_2040_percent}%)
-                  </div>
-                </div>
-              )}
-            </div>
+          <div className="relative z-10">
+            <h2 className="text-2xl font-semibold mb-2 text-gray-100">Future Projections</h2>
+            <p className="text-sm text-gray-400 mb-6">
+              Heuristic estimates based on your 2035 result and {results.mostLikelyTimeline || 'Mid'} timeline
+            </p>
             
-            <div className="p-6 bg-gray-900 rounded-lg border border-gray-700">
-              <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2060</h3>
-              <div className={`text-4xl font-bold ${getProbabilityColor(results.pdoom2060.central)}`}>
-                {results.pdoom2060.central?.toFixed(1) || 'N/A'}%
-              </div>
-              <div className="text-sm text-gray-400 mt-2 mb-3">
-                Range: {results.pdoom2060.lower?.toFixed(1) || 'N/A'}% -
-                {results.pdoom2060.upper?.toFixed(1) || 'N/A'}%
-              </div>
-              
-              <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div className={`h-full ${getProbabilityGradient(results.pdoom2060.central)}`}
-                     style={{width: `${results.pdoom2060.central || 0}%`}}></div>
-              </div>
-              
-              {closestExpert2060 && (
-                <div className="mt-4 bg-gray-800 p-3 rounded shadow-sm border border-gray-700">
-                  <div className="text-sm text-gray-300">
-                    Closest to <strong>{closestExpert2060.name}</strong>
-                    ({closestExpert2060.pdoom_2060_percent}%)
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-6 bg-gray-900/80 rounded-lg border-2 border-orange-900/50 shadow-lg hover:border-orange-700/70 transition-all relative overflow-hidden group">
+                {/* Hover flame effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity">
+                  <FlameEffect intensity="medium" size="small" />
                 </div>
-              )}
+                
+                <div className="relative z-10">
+                  <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2040</h3>
+                  <div className={`text-5xl font-bold ${getProbabilityColor(results.pdoom2040.central)} ${getDoomTextClass(results.pdoom2040.central)}`}>
+                    {results.pdoom2040.central?.toFixed(1) || 'N/A'}%
+                  </div>
+                  <div className="text-sm text-gray-400 mt-2 mb-3">
+                    Range: {results.pdoom2040.lower?.toFixed(1) || 'N/A'}% -
+                    {results.pdoom2040.upper?.toFixed(1) || 'N/A'}%
+                  </div>
+                  
+                  <div className="w-full bg-gray-800 h-4 rounded-full overflow-hidden border border-gray-700 shadow-inner">
+                    <div className={`h-full ${getProbabilityGradient(results.pdoom2040.central)} transition-all duration-1000`}
+                         style={{width: animate ? `${results.pdoom2040.central || 0}%` : '0%'}}>
+                      <div className="w-full h-full opacity-50 bg-gradient-to-t from-white/30 to-transparent" />
+                    </div>
+                  </div>
+                  
+                  {closestExpert2040 && (
+                    <div className="mt-4 bg-gray-800/50 p-3 rounded shadow-sm border border-gray-700">
+                      <div className="text-sm text-gray-300">
+                        Closest to <strong>{closestExpert2040.name}</strong>
+                        ({closestExpert2040.pdoom_2040_percent}%)
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="p-6 bg-gray-900/80 rounded-lg border-2 border-red-900/50 shadow-lg hover:border-red-700/70 transition-all relative overflow-hidden group">
+                {/* Hover flame effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity">
+                  <FlameEffect intensity="high" size="small" />
+                </div>
+                
+                <div className="relative z-10">
+                  <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2060</h3>
+                  <div className={`text-5xl font-bold ${getProbabilityColor(results.pdoom2060.central)} ${getDoomTextClass(results.pdoom2060.central)}`}>
+                    {results.pdoom2060.central?.toFixed(1) || 'N/A'}%
+                  </div>
+                  <div className="text-sm text-gray-400 mt-2 mb-3">
+                    Range: {results.pdoom2060.lower?.toFixed(1) || 'N/A'}% -
+                    {results.pdoom2060.upper?.toFixed(1) || 'N/A'}%
+                  </div>
+                  
+                  <div className="w-full bg-gray-800 h-4 rounded-full overflow-hidden border border-gray-700 shadow-inner">
+                    <div className={`h-full ${getProbabilityGradient(results.pdoom2060.central)} transition-all duration-1000`}
+                         style={{width: animate ? `${results.pdoom2060.central || 0}%` : '0%'}}>
+                      <div className="w-full h-full opacity-50 bg-gradient-to-t from-white/30 to-transparent" />
+                    </div>
+                  </div>
+                  
+                  {closestExpert2060 && (
+                    <div className="mt-4 bg-gray-800/50 p-3 rounded shadow-sm border border-gray-700">
+                      <div className="text-sm text-gray-300">
+                        Closest to <strong>{closestExpert2060.name}</strong>
+                        ({closestExpert2060.pdoom_2060_percent}%)
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
         
         {/* Expert Comparison Chart */}
-        <div className={`bg-gray-800 rounded-lg shadow-md p-8 mb-8 border border-gray-700 transition-all duration-1000 transform ${
+        <div className={`bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-2xl p-8 mb-8 border-2 border-gray-700 transition-all duration-1000 transform ${
           animate ? 'opacity-100 translate-y-0 delay-500' : 'opacity-0 translate-y-10'
         }`}>
           <h2 className="text-2xl font-semibold mb-2 text-gray-100">Expert Comparison</h2>
