@@ -5,8 +5,8 @@ import cptData from './bn_cpts.json';
 export type Expert = {
   name: string;
   pdoom_2035_percent: number | null;
-  pdoom_2050_percent: number | null;
-  pdoom_2100_percent: number | null;
+  pdoom_2040_percent: number | null;
+  pdoom_2060_percent: number | null;
 };
 
 // Load CPTs from the imported JSON file
@@ -15,7 +15,7 @@ export function loadCPTs() {
 }
 
 // Find expert with closest estimate to user for a specific year
-export function findClosestExpert(userEstimate: number, year: 2035 | 2050 | 2100): Expert | null {
+export function findClosestExpert(userEstimate: number, year: 2035 | 2040 | 2060): Expert | null {
   // Load and parse experts data
   const experts = loadExperts();
   
@@ -44,7 +44,7 @@ export function findClosestExpert(userEstimate: number, year: 2035 | 2050 | 2100
 }
 
 // Load all experts for a specific year (for chart data)
-export function loadExpertsForYear(year: 2035 | 2050 | 2100): Expert[] {
+export function loadExpertsForYear(year: 2035 | 2040 | 2060): Expert[] {
   const experts = loadExperts();
   return experts.filter(e => e[`pdoom_${year}_percent`] !== null);
 }
@@ -57,62 +57,80 @@ export function loadExperts(): Expert[] {
       {
         name: "Eliezer Yudkowsky",
         pdoom_2035_percent: 90,
-        pdoom_2050_percent: 95,
-        pdoom_2100_percent: 99
+        pdoom_2040_percent: 93,
+        pdoom_2060_percent: 97
       },
       {
         name: "Paul Christiano",
         pdoom_2035_percent: 5,
-        pdoom_2050_percent: 10,
-        pdoom_2100_percent: 20
+        pdoom_2040_percent: 8,
+        pdoom_2060_percent: 15
       },
       {
         name: "Sam Altman",
         pdoom_2035_percent: 5,
-        pdoom_2050_percent: 15,
-        pdoom_2100_percent: 33
+        pdoom_2040_percent: 10,
+        pdoom_2060_percent: 25
       },
       {
         name: "Geoffrey Hinton",
         pdoom_2035_percent: 10,
-        pdoom_2050_percent: 30,
-        pdoom_2100_percent: 60
+        pdoom_2040_percent: 20,
+        pdoom_2060_percent: 45
       },
       {
         name: "Stuart Russell",
         pdoom_2035_percent: 5,
-        pdoom_2050_percent: 20,
-        pdoom_2100_percent: 50
+        pdoom_2040_percent: 12,
+        pdoom_2060_percent: 35
       },
       {
         name: "Demis Hassabis",
         pdoom_2035_percent: 1,
-        pdoom_2050_percent: 3,
-        pdoom_2100_percent: 10
+        pdoom_2040_percent: 2,
+        pdoom_2060_percent: 5
       },
       {
         name: "Yoshua Bengio",
         pdoom_2035_percent: 2,
-        pdoom_2050_percent: 5,
-        pdoom_2100_percent: 10
+        pdoom_2040_percent: 4,
+        pdoom_2060_percent: 8
       },
       {
         name: "Andrew Ng",
         pdoom_2035_percent: 0,
-        pdoom_2050_percent: 0,
-        pdoom_2100_percent: 1
+        pdoom_2040_percent: 0,
+        pdoom_2060_percent: 1
       },
       {
         name: "Yann LeCun",
         pdoom_2035_percent: 0,
-        pdoom_2050_percent: 0,
-        pdoom_2100_percent: 1
+        pdoom_2040_percent: 0,
+        pdoom_2060_percent: 1
       },
       {
         name: "Helen Toner",
         pdoom_2035_percent: 3,
-        pdoom_2050_percent: 10,
-        pdoom_2100_percent: 20
+        pdoom_2040_percent: 6,
+        pdoom_2060_percent: 15
+      },
+      {
+        name: "Nick Bostrom",
+        pdoom_2035_percent: 10,
+        pdoom_2040_percent: 15,
+        pdoom_2060_percent: 35
+      },
+      {
+        name: "Eric Schmidt",
+        pdoom_2035_percent: 2,
+        pdoom_2040_percent: 5,
+        pdoom_2060_percent: 12
+      },
+      {
+        name: "Rob Miles",
+        pdoom_2035_percent: 15,
+        pdoom_2040_percent: 22,
+        pdoom_2060_percent: 42
       }
     ];
   } catch (error) {

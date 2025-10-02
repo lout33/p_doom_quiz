@@ -24,10 +24,12 @@ export default function Home() {
         <div className="mb-10 bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
           <h2 className="text-2xl font-semibold mb-3 text-gray-200">How It Works</h2>
           <ol className="text-left list-decimal list-inside space-y-2 text-gray-300">
-            <li>Answer a series of questions about AI risk factors</li>
+            <li>Enter your nickname and answer questions about AI risk factors</li>
             <li>Get your P(doom) estimate for 2035 based on a Bayesian Network</li>
-            <li>See heuristic projections for 2050 and 2100</li>
-            <li>Compare your estimates with AI experts</li>
+            <li>See heuristic projections for 2040 and 2060</li>
+            <li>Compare your estimates with 13 AI experts and researchers</li>
+            <li>Get a personalized certificate and share your results</li>
+            <li>Click on experts to learn about their backgrounds and sources</li>
           </ol>
         </div>
         

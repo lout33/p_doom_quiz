@@ -14,6 +14,8 @@ export default function QuizPage() {
   const [userEvidence, setUserEvidence] = useState<Evidence>({});
   const [intermediateResults, setIntermediateResults] = useState<{[key: string]: number} | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nickname, setNickname] = useState('');
+  const [showNicknameInput, setShowNicknameInput] = useState(true);
   
   // Start with fresh evidence on mount
   useEffect(() => {
@@ -21,6 +23,14 @@ export default function QuizPage() {
     setIntermediateResults(null);
     // Initialize localStorage when the component mounts
     localStorage.removeItem('pdoom_evidence');
+    localStorage.removeItem('pdoom_nickname');
+    
+    // Check if nickname already exists
+    const existingNickname = localStorage.getItem('pdoom_nickname');
+    if (existingNickname) {
+      setNickname(existingNickname);
+      setShowNicknameInput(false);
+    }
   }, []);
   
   // Filter out the prior belief question which is handled separately
@@ -28,6 +38,15 @@ export default function QuizPage() {
   
   const progress = Math.round((currentQuestionIndex / quizQuestions.length) * 100);
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  
+  // Handle nickname submission
+  const handleNicknameSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (nickname.trim().length >= 2) {
+      localStorage.setItem('pdoom_nickname', nickname.trim());
+      setShowNicknameInput(false);
+    }
+  };
   
   // Handle option selection
   const handleOptionSelect = (question: Question, optionValue: string | number) => {
@@ -74,10 +93,62 @@ export default function QuizPage() {
     return 'text-red-400';
   };
   
+  // Show nickname input screen
+  if (showNicknameInput) {
+    return (
+      <div className="min-h-screen py-8 px-4 bg-gray-900 flex items-center justify-center">
+        <div className="max-w-md w-full">
+          <div className="bg-gray-800 rounded-lg shadow-md p-8 border border-gray-700">
+            <h1 className="text-3xl font-bold mb-2 text-center text-gray-100">Welcome to P(doom)</h1>
+            <p className="text-center text-gray-400 mb-8">Enter your nickname to get started</p>
+            
+            <form onSubmit={handleNicknameSubmit}>
+              <div className="mb-6">
+                <label htmlFor="nickname" className="block text-sm font-medium text-gray-300 mb-2">
+                  Your Nickname
+                </label>
+                <input
+                  type="text"
+                  id="nickname"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  placeholder="Enter 2-20 characters"
+                  maxLength={20}
+                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  autoFocus
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  This will appear on your P(doom) certificate
+                </p>
+              </div>
+              
+              <button
+                type="submit"
+                disabled={nickname.trim().length < 2}
+                className={`w-full py-3 rounded-lg font-semibold transition-all ${
+                  nickname.trim().length >= 2
+                    ? 'bg-blue-700 hover:bg-blue-600 text-white shadow-md hover:shadow-lg'
+                    : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                }`}
+              >
+                Continue to Quiz
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-screen py-8 px-4 bg-gray-900">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-center text-gray-100">P(doom) Calculator</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-3xl font-bold text-gray-100">P(doom) Calculator</h1>
+          <div className="text-sm text-gray-400">
+            Welcome, <span className="text-blue-400 font-semibold">{nickname}</span>
+          </div>
+        </div>
         <p className="text-center text-gray-400 mb-8">Answer questions about AI risk factors to calculate existential risk probability</p>
         
         <div className="mb-8">
@@ -167,4 +238,4 @@ export default function QuizPage() {
       </div>
     </div>
   );
-} 
+}

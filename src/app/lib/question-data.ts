@@ -174,6 +174,90 @@ export const questions: Question[] = [
       { label: 'Somewhat unlikely (20-40%)', value: 'Med' },
       { label: 'Very unlikely (<20%)', value: 'Low' }
     ]
+  },
+  {
+    id: 'Q17_Datacenter',
+    level: 2,
+    text: "How concerned are you about the impact of AI datacenter growth on electricity prices and grid stability?",
+    node: 'DatacenterImpact',
+    options: [
+      { label: 'Very concerned - major crisis likely', value: 'High' },
+      { label: 'Moderately concerned', value: 'Med' },
+      { label: 'Slightly concerned', value: 'Low' },
+      { label: 'Not concerned', value: 'Low' }
+    ]
+  },
+  {
+    id: 'Q18_Energy',
+    level: 2,
+    text: "Do you think energy demands from AI will significantly affect global infrastructure by 2035?",
+    node: 'EnergyDemand',
+    options: [
+      { label: 'Yes, catastrophic impact', value: 'High' },
+      { label: 'Yes, significant strain', value: 'Med' },
+      { label: 'Some impact but manageable', value: 'Low' },
+      { label: 'Minimal to no impact', value: 'Low' }
+    ]
+  },
+  {
+    id: 'Q19_RedTeam',
+    level: 3,
+    text: "Have you tried red teaming AI system prompts (jailbreaking, prompt injection)?",
+    node: 'RedTeamExperience',
+    options: [
+      { label: 'Yes, extensively', value: 'High' },
+      { label: 'Yes, a few times', value: 'Med' },
+      { label: 'No, but I understand the concept', value: 'Low' },
+      { label: 'No, unfamiliar with this', value: 'Low' }
+    ]
+  },
+  {
+    id: 'Q20_FineTune',
+    level: 3,
+    text: "Have you fine-tuned or trained your own language models?",
+    node: 'FineTuneExperience',
+    options: [
+      { label: 'Yes, multiple times', value: 'High' },
+      { label: 'Yes, once or twice', value: 'Med' },
+      { label: 'No, but I understand the process', value: 'Low' },
+      { label: 'No, unfamiliar', value: 'Low' }
+    ]
+  },
+  {
+    id: 'Q21_Uncensored',
+    level: 3,
+    text: "Have you used uncensored/unaligned LLMs?",
+    node: 'UncensoredExperience',
+    options: [
+      { label: 'Yes, regularly', value: 'High' },
+      { label: 'Yes, occasionally', value: 'Med' },
+      { label: 'No, but aware they exist', value: 'Low' },
+      { label: 'No, unfamiliar', value: 'Low' }
+    ]
+  },
+  {
+    id: 'Q22_DeepLearning',
+    level: 3,
+    text: "What is your experience with deep learning architectures (CNNs, RNNs, Transformers)?",
+    node: 'DeepLearningExperience',
+    options: [
+      { label: 'Extensive - built and trained models', value: 'High' },
+      { label: 'Moderate - used pre-trained models', value: 'Med' },
+      { label: 'Basic - theoretical understanding', value: 'Low' },
+      { label: 'None', value: 'Low' }
+    ]
+  },
+  {
+    id: 'Q23_EvolutionaryAI',
+    level: 3,
+    text: "Have you worked with evolutionary algorithms, genetic algorithms, or cellular automata?",
+    node: 'EvolutionaryExperience',
+    options: [
+      { label: 'Yes, implemented from scratch', value: 'High' },
+      { label: 'Yes, used existing libraries', value: 'Med' },
+      { label: 'No, but understand the concepts', value: 'Low' },
+      { label: 'No, unfamiliar', value: 'Low' }
+    ]
   }
 ];
 

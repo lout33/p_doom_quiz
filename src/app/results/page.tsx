@@ -13,6 +13,7 @@ export default function ResultsPage() {
   const [results, setResults] = useState<PDoomResults | null>(null);
   const [loading, setLoading] = useState(true);
   const [animate, setAnimate] = useState(false);
+  const [nickname, setNickname] = useState<string>('');
   
   useEffect(() => {
     // Load evidence from localStorage
@@ -38,6 +39,12 @@ export default function ResultsPage() {
       
       // Trigger animations after a small delay
       setTimeout(() => setAnimate(true), 100);
+    }
+    
+    // Load nickname
+    const storedNickname = localStorage.getItem('pdoom_nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
     }
   }, []);
   
@@ -107,14 +114,45 @@ export default function ResultsPage() {
   
   // Find closest experts
   const closestExpert2035 = findClosestExpert(results.pdoom2035.central, 2035);
-  const closestExpert2050 = findClosestExpert(results.pdoom2050.central || 0, 2050);
-  const closestExpert2100 = findClosestExpert(results.pdoom2100.central || 0, 2100);
+  const closestExpert2040 = findClosestExpert(results.pdoom2040.central || 0, 2040);
+  const closestExpert2060 = findClosestExpert(results.pdoom2060.central || 0, 2060);
+  
+  // Share functionality
+  const handleShare = async () => {
+    const shareText = `I just calculated my P(doom) estimate!
+
+🎯 2035: ${results.pdoom2035.central.toFixed(1)}%
+📈 2040: ${results.pdoom2040.central?.toFixed(1)}%
+📊 2060: ${results.pdoom2060.central?.toFixed(1)}%
+
+Calculate yours at: ${window.location.origin}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My P(doom) Results',
+          text: shareText,
+        });
+      } catch (err) {
+        console.log('Error sharing:', err);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(shareText);
+      alert('Results copied to clipboard!');
+    }
+  };
   
   return (
     <div className="min-h-screen py-8 px-4 bg-gray-900">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-center text-gray-100">Your P(doom) Results</h1>
-        <p className="text-center text-gray-400 mb-8">Based on your responses to the AI risk factor questionnaire</p>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2 text-gray-100">Your P(doom) Results</h1>
+          {nickname && (
+            <p className="text-lg text-blue-400 mb-2">Certificate for: <span className="font-semibold">{nickname}</span></p>
+          )}
+          <p className="text-gray-400">Based on your responses to the AI risk factor questionnaire</p>
+        </div>
         
         {/* Main results card with animation */}
         <div className={`bg-gray-800 rounded-lg shadow-md p-8 mb-8 border border-gray-700 transition-all duration-1000 transform ${
@@ -173,50 +211,50 @@ export default function ResultsPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-6 bg-gray-900 rounded-lg border border-gray-700">
-              <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2050</h3>
-              <div className={`text-4xl font-bold ${getProbabilityColor(results.pdoom2050.central)}`}>
-                {results.pdoom2050.central?.toFixed(1) || 'N/A'}%
+              <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2040</h3>
+              <div className={`text-4xl font-bold ${getProbabilityColor(results.pdoom2040.central)}`}>
+                {results.pdoom2040.central?.toFixed(1) || 'N/A'}%
               </div>
               <div className="text-sm text-gray-400 mt-2 mb-3">
-                Range: {results.pdoom2050.lower?.toFixed(1) || 'N/A'}% - 
-                {results.pdoom2050.upper?.toFixed(1) || 'N/A'}%
+                Range: {results.pdoom2040.lower?.toFixed(1) || 'N/A'}% -
+                {results.pdoom2040.upper?.toFixed(1) || 'N/A'}%
               </div>
               
               <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div className={`h-full ${getProbabilityGradient(results.pdoom2050.central)}`} 
-                     style={{width: `${results.pdoom2050.central || 0}%`}}></div>
+                <div className={`h-full ${getProbabilityGradient(results.pdoom2040.central)}`}
+                     style={{width: `${results.pdoom2040.central || 0}%`}}></div>
               </div>
               
-              {closestExpert2050 && (
+              {closestExpert2040 && (
                 <div className="mt-4 bg-gray-800 p-3 rounded shadow-sm border border-gray-700">
                   <div className="text-sm text-gray-300">
-                    Closest to <strong>{closestExpert2050.name}</strong> 
-                    ({closestExpert2050.pdoom_2050_percent}%)
+                    Closest to <strong>{closestExpert2040.name}</strong>
+                    ({closestExpert2040.pdoom_2040_percent}%)
                   </div>
                 </div>
               )}
             </div>
             
             <div className="p-6 bg-gray-900 rounded-lg border border-gray-700">
-              <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2100</h3>
-              <div className={`text-4xl font-bold ${getProbabilityColor(results.pdoom2100.central)}`}>
-                {results.pdoom2100.central?.toFixed(1) || 'N/A'}%
+              <h3 className="text-xl font-semibold text-gray-100 mb-4">P(doom) by 2060</h3>
+              <div className={`text-4xl font-bold ${getProbabilityColor(results.pdoom2060.central)}`}>
+                {results.pdoom2060.central?.toFixed(1) || 'N/A'}%
               </div>
               <div className="text-sm text-gray-400 mt-2 mb-3">
-                Range: {results.pdoom2100.lower?.toFixed(1) || 'N/A'}% - 
-                {results.pdoom2100.upper?.toFixed(1) || 'N/A'}%
+                Range: {results.pdoom2060.lower?.toFixed(1) || 'N/A'}% -
+                {results.pdoom2060.upper?.toFixed(1) || 'N/A'}%
               </div>
               
               <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div className={`h-full ${getProbabilityGradient(results.pdoom2100.central)}`} 
-                     style={{width: `${results.pdoom2100.central || 0}%`}}></div>
+                <div className={`h-full ${getProbabilityGradient(results.pdoom2060.central)}`}
+                     style={{width: `${results.pdoom2060.central || 0}%`}}></div>
               </div>
               
-              {closestExpert2100 && (
+              {closestExpert2060 && (
                 <div className="mt-4 bg-gray-800 p-3 rounded shadow-sm border border-gray-700">
                   <div className="text-sm text-gray-300">
-                    Closest to <strong>{closestExpert2100.name}</strong> 
-                    ({closestExpert2100.pdoom_2100_percent}%)
+                    Closest to <strong>{closestExpert2060.name}</strong>
+                    ({closestExpert2060.pdoom_2060_percent}%)
                   </div>
                 </div>
               )}
@@ -232,22 +270,31 @@ export default function ResultsPage() {
           <p className="text-sm text-gray-400 mb-6">
             See how your estimate compares to AI researchers and industry experts
           </p>
-          <ResultsChart results={results} />
+          <ResultsChart results={results} nickname={nickname} />
         </div>
         
         <div className={`text-center mt-10 transition-all duration-1000 ${
           animate ? 'opacity-100 delay-700' : 'opacity-0'
         }`}>
-          <Link 
+          <button
+            onClick={handleShare}
+            className="bg-green-700 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md hover:shadow-lg mr-4 mb-4"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline-block mr-2 -mt-1" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+            </svg>
+            Share Results
+          </button>
+          <Link
             href="/"
-            className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md hover:shadow-lg mr-4"
+            className="bg-blue-800 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md hover:shadow-lg mr-4 mb-4 inline-block"
             onClick={handleStartNewQuiz}
           >
             Return Home
           </Link>
-          <Link 
+          <Link
             href="/quiz"
-            className="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-3 px-8 rounded-lg transition-colors border border-gray-700 shadow-md hover:shadow-lg"
+            className="bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-3 px-8 rounded-lg transition-colors border border-gray-700 shadow-md hover:shadow-lg mb-4 inline-block"
             onClick={handleStartNewQuiz}
           >
             Take Quiz Again

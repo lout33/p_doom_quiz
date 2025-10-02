@@ -21,8 +21,8 @@ export const KEY_DELIMITER = '|';
 export const PERTURBATION_DELTA = 0.10; // For sensitivity analysis on 2035 CPT
 
 // Heuristic configuration
-export const BASE_INCREASE_2050 = 7.5;
-export const BASE_INCREASE_2100 = 12.5;
+export const BASE_INCREASE_2040 = 5.0;
+export const BASE_INCREASE_2060 = 10.0;
 export const TIMELINE_MULTIPLIER: Record<string, number> = {
   'Early': 0.6,
   'Mid': 1.0,
@@ -337,10 +337,10 @@ export function calculateHeuristicPdoom(
   const timelineMult = TIMELINE_MULTIPLIER[mostLikelyTimeline] || TIMELINE_MULTIPLIER[DEFAULT_TIMELINE_FOR_HEURISTIC];
   let pdoomAdjusted = pdoomStartPercent;
   
-  if (targetYear === 2050) {
-    pdoomAdjusted += (BASE_INCREASE_2050 * timelineMult);
-  } else if (targetYear === 2100) {
-    pdoomAdjusted += ((BASE_INCREASE_2050 + BASE_INCREASE_2100) * timelineMult);
+  if (targetYear === 2040) {
+    pdoomAdjusted += (BASE_INCREASE_2040 * timelineMult);
+  } else if (targetYear === 2060) {
+    pdoomAdjusted += ((BASE_INCREASE_2040 + BASE_INCREASE_2060) * timelineMult);
   } else {
     return pdoomStartPercent; // Unknown year
   }
@@ -355,12 +355,12 @@ export type PDoomResults = {
     central: number;
     upper: number;
   };
-  pdoom2050: {
+  pdoom2040: {
     lower: number | null;
     central: number | null;
     upper: number | null;
   };
-  pdoom2100: {
+  pdoom2060: {
     lower: number | null;
     central: number | null;
     upper: number | null;
@@ -399,14 +399,14 @@ export function analyzePDoom(
   const timelineDist = probsCentral['Timeline'] || {};
   const mostLikelyTimeline = getMostLikelyState(timelineDist) || DEFAULT_TIMELINE_FOR_HEURISTIC;
   
-  // Calculate heuristic estimates for 2050 and 2100
-  const pdoom2050Lower = calculateHeuristicPdoom(pdoom2035Lower, mostLikelyTimeline, 2050);
-  const pdoom2050Central = calculateHeuristicPdoom(pdoom2035Central, mostLikelyTimeline, 2050);
-  const pdoom2050Upper = calculateHeuristicPdoom(pdoom2035Upper, mostLikelyTimeline, 2050);
+  // Calculate heuristic estimates for 2040 and 2060
+  const pdoom2040Lower = calculateHeuristicPdoom(pdoom2035Lower, mostLikelyTimeline, 2040);
+  const pdoom2040Central = calculateHeuristicPdoom(pdoom2035Central, mostLikelyTimeline, 2040);
+  const pdoom2040Upper = calculateHeuristicPdoom(pdoom2035Upper, mostLikelyTimeline, 2040);
   
-  const pdoom2100Lower = calculateHeuristicPdoom(pdoom2035Lower, mostLikelyTimeline, 2100);
-  const pdoom2100Central = calculateHeuristicPdoom(pdoom2035Central, mostLikelyTimeline, 2100);
-  const pdoom2100Upper = calculateHeuristicPdoom(pdoom2035Upper, mostLikelyTimeline, 2100);
+  const pdoom2060Lower = calculateHeuristicPdoom(pdoom2035Lower, mostLikelyTimeline, 2060);
+  const pdoom2060Central = calculateHeuristicPdoom(pdoom2035Central, mostLikelyTimeline, 2060);
+  const pdoom2060Upper = calculateHeuristicPdoom(pdoom2035Upper, mostLikelyTimeline, 2060);
   
   return {
     pdoom2035: {
@@ -414,16 +414,16 @@ export function analyzePDoom(
       central: pdoom2035Central,
       upper: pdoom2035Upper
     },
-    pdoom2050: {
-      lower: pdoom2050Lower,
-      central: pdoom2050Central,
-      upper: pdoom2050Upper
+    pdoom2040: {
+      lower: pdoom2040Lower,
+      central: pdoom2040Central,
+      upper: pdoom2040Upper
     },
-    pdoom2100: {
-      lower: pdoom2100Lower,
-      central: pdoom2100Central,
-      upper: pdoom2100Upper
+    pdoom2060: {
+      lower: pdoom2060Lower,
+      central: pdoom2060Central,
+      upper: pdoom2060Upper
     },
     mostLikelyTimeline
   };
-} 
+}
