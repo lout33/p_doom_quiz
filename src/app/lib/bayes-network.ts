@@ -366,12 +366,49 @@ export type PDoomResults = {
     upper: number | null;
   };
   mostLikelyTimeline: string | null;
+  modelConfidence: number | null;
+  epistemicAdjusted?: {
+    pdoom2035: {
+      lower: number;
+      central: number;
+      upper: number;
+    };
+    pdoom2040: {
+      lower: number | null;
+      central: number | null;
+      upper: number | null;
+    };
+    pdoom2060: {
+      lower: number | null;
+      central: number | null;
+      upper: number | null;
+    };
+  };
 };
+
+// Apply epistemic uncertainty adjustment
+export function applyEpistemicAdjustment(
+  rawValue: number | null,
+  modelConfidence: number
+): number | null {
+  if (rawValue === null) return null;
+  
+  // Apply the "if you predict you will update, update now" principle
+  // If model confidence is 50%, we expect a 50% chance the model is fundamentally wrong
+  // In that scenario, we assume a much lower baseline risk (say 5%)
+  const baselineIfWrong = 5; // 5% baseline if the model is completely wrong
+  
+  // Expected value: P(model correct) * raw_estimate + P(model wrong) * baseline
+  const adjustedValue = (modelConfidence * rawValue) + ((1 - modelConfidence) * baselineIfWrong);
+  
+  return adjustedValue;
+}
 
 // Analyze evidence and return all P(doom) estimates
 export function analyzePDoom(
   evidence: Evidence,
-  cpts: { central: CPTs, optimistic: CPTs, pessimistic: CPTs }
+  cpts: { central: CPTs, optimistic: CPTs, pessimistic: CPTs },
+  modelConfidence: number | null = null
 ): PDoomResults {
   const { central, optimistic, pessimistic } = cpts;
   
@@ -408,7 +445,7 @@ export function analyzePDoom(
   const pdoom2060Central = calculateHeuristicPdoom(pdoom2035Central, mostLikelyTimeline, 2060);
   const pdoom2060Upper = calculateHeuristicPdoom(pdoom2035Upper, mostLikelyTimeline, 2060);
   
-  return {
+  const results: PDoomResults = {
     pdoom2035: {
       lower: pdoom2035Lower,
       central: pdoom2035Central,
@@ -424,6 +461,30 @@ export function analyzePDoom(
       central: pdoom2060Central,
       upper: pdoom2060Upper
     },
-    mostLikelyTimeline
+    mostLikelyTimeline,
+    modelConfidence
   };
+  
+  // Apply epistemic adjustment if model confidence is provided
+  if (modelConfidence !== null && modelConfidence < 1.0) {
+    results.epistemicAdjusted = {
+      pdoom2035: {
+        lower: applyEpistemicAdjustment(pdoom2035Lower, modelConfidence) || 0,
+        central: applyEpistemicAdjustment(pdoom2035Central, modelConfidence) || 0,
+        upper: applyEpistemicAdjustment(pdoom2035Upper, modelConfidence) || 0
+      },
+      pdoom2040: {
+        lower: applyEpistemicAdjustment(pdoom2040Lower, modelConfidence),
+        central: applyEpistemicAdjustment(pdoom2040Central, modelConfidence),
+        upper: applyEpistemicAdjustment(pdoom2040Upper, modelConfidence)
+      },
+      pdoom2060: {
+        lower: applyEpistemicAdjustment(pdoom2060Lower, modelConfidence),
+        central: applyEpistemicAdjustment(pdoom2060Central, modelConfidence),
+        upper: applyEpistemicAdjustment(pdoom2060Upper, modelConfidence)
+      }
+    };
+  }
+  
+  return results;
 }

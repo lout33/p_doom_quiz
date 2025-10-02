@@ -12,11 +12,26 @@ export type Question = {
   text: string;
   node: string;
   isPriorBelief?: boolean;
+  isEpistemicUncertainty?: boolean;
   options: QuestionOption[];
 };
 
 // Define the questions based on the Python implementation
 export const questions: Question[] = [
+  {
+    id: 'Q0_Epistemic',
+    level: 0,
+    text: "How confident are you that our current understanding of AI risk factors is fundamentally correct? (This reflects model uncertainty - the possibility we'll discover something that changes the picture entirely)",
+    node: 'ModelConfidence',
+    isEpistemicUncertainty: true,
+    options: [
+      { label: 'Very confident (80-100%) - Framework is solid', value: 0.90 },
+      { label: 'Moderately confident (60-80%) - Mostly correct', value: 0.70 },
+      { label: 'Uncertain (40-60%) - Equal chance of major shifts', value: 0.50 },
+      { label: 'Low confidence (20-40%) - Likely missing key factors', value: 0.30 },
+      { label: 'Very low confidence (<20%) - Framework probably wrong', value: 0.10 }
+    ]
+  },
   {
     id: 'Q14',
     level: 1,

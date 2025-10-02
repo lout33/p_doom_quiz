@@ -199,7 +199,9 @@ Calculate yours at: ${window.location.origin}`;
           <div className="relative z-10">
             <h2 className="text-2xl font-semibold mb-2 text-gray-100">P(doom) by 2035</h2>
             <p className="text-sm text-gray-400 mb-6">
-              Based on the Bayesian Network model and your responses to key AI risk factors
+              {results.modelConfidence !== null
+                ? `Framework estimate (${(results.modelConfidence * 100).toFixed(0)}% model confidence)`
+                : 'Based on the Bayesian Network model and your responses to key AI risk factors'}
             </p>
             
             <div className="flex flex-col md:flex-row items-center mb-6">
@@ -225,6 +227,39 @@ Calculate yours at: ${window.location.origin}`;
               </div>
             </div>
           </div>
+          
+          {/* Epistemic Uncertainty Adjustment */}
+          {results.epistemicAdjusted && results.modelConfidence !== null && (
+            <div className="mt-6 p-4 bg-purple-900/30 rounded-lg border border-purple-900">
+              <div className="flex items-start">
+                <div className="bg-purple-900 rounded-full p-2 mr-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-purple-300 mb-2">
+                    Epistemic Uncertainty Adjusted Estimate
+                  </p>
+                  <div className="flex items-baseline gap-4 mb-2">
+                    <div>
+                      <span className="text-sm text-purple-400">Adjusted Central:</span>
+                      <span className={`ml-2 text-2xl font-bold ${getProbabilityColor(results.epistemicAdjusted.pdoom2035.central)}`}>
+                        {results.epistemicAdjusted.pdoom2035.central.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="text-sm text-purple-400">
+                      Range: {results.epistemicAdjusted.pdoom2035.lower.toFixed(1)}% - {results.epistemicAdjusted.pdoom2035.upper.toFixed(1)}%
+                    </div>
+                  </div>
+                  <p className="text-xs text-purple-400 mt-2">
+                    This accounts for the possibility ({((1 - results.modelConfidence) * 100).toFixed(0)}%) that our understanding of AI risk is fundamentally incorrect.
+                    Following the principle "if you predict you will update, update now" - your true p(doom) may be closer to this adjusted value.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           
           {closestExpert2035 && (
             <div className="mt-6 p-4 bg-blue-900/30 rounded-lg border border-blue-900">
@@ -374,10 +409,16 @@ Calculate yours at: ${window.location.origin}`;
           </Link>
           
           <div className="mt-8 text-sm text-gray-500 max-w-2xl mx-auto">
-            <p>
+            <p className="mb-3">
               These estimates are based on a simplified Bayesian Network model and should be interpreted as subjective probabilities.
               The results should be taken as a tool for thinking about AI risk, not as definitive scientific predictions.
             </p>
+            {results.modelConfidence !== null && results.modelConfidence < 1.0 && (
+              <p className="text-purple-400 italic">
+                Note: Your model confidence setting ({(results.modelConfidence * 100).toFixed(0)}%) indicates uncertainty about whether this framework captures the full picture of AI risk.
+                The adjusted estimates reflect this meta-uncertainty.
+              </p>
+            )}
           </div>
         </div>
       </div>
