@@ -15,6 +15,7 @@ P(doom) represents the estimated probability of an AI-related existential catast
 - **Visual Effects** - Dynamic doom-themed interface with flame effects and ember particles
 - **Expert Insights** - Click on any expert to learn about their background and reasoning
 - **Bayesian Network** - Uses a simplified Bayesian Network to calculate probabilities based on your answers
+- **Embeddable Widget** - Share the calculator on your website with a simple iframe snippet
 
 ## Recent Updates
 
@@ -88,6 +89,35 @@ npm run build
 3. **View Results** - See your estimates across multiple timeframes (2035-2100)
 4. **Compare with Experts** - See where you stand relative to AI researchers and industry experts
 5. **Explore Insights** - Click on experts to learn about their reasoning and sources
+
+## Embed on Your Website
+
+You can embed the P(doom) calculator on your own website, blog, or documentation. After completing the quiz, click the **"Embed Widget"** button on the results page to access the embed code and preview.
+
+### Quick Embed
+
+Add this snippet to your HTML where you want the calculator to appear:
+
+```html
+<div style="max-width:960px;margin:0 auto;">
+  <iframe
+    src="https://p-doom-quiz.vercel.app"
+    title="P(doom) Calculator"
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowtransparency="true"
+    style="width:100%;min-height:760px;border:1px solid rgba(120,186,255,0.35);background:#0b1120;"
+  ></iframe>
+</div>
+```
+
+### Embedding Tips
+
+- **Height**: The calculator requires approximately 740-760px of vertical space at desktop widths
+- **Styling**: The widget uses a dark theme, so it works best on dark backgrounds
+- **Responsive**: The iframe is fully responsive and adapts to different screen sizes
+- **CSP**: If you use Content Security Policy, add `https://p-doom-quiz.vercel.app` to the `frame-src` directive
+- **Customization**: You can adjust the `min-height` and border styles to match your site's design
 
 ## Educational Purpose
 

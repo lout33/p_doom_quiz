@@ -1,0 +1,13 @@
+Ideas for improvement:
+Add a Share button, so people can share their stats on social media
+Lower the years a bit. The current years are quite far into the future, like 100 years.
+Add the users nickname, so they have it as a certificate of their prediciton.
+Add questions regarding the ever growing datacenters and the consequence on electricity prices.
+Survey about what background knowledge people have about AI: eg have you tried red teaming system prompts, have you fine tuned a LLM, have you used an uncensored LLM, have you used CNNs, have you used RNNs, genetic algorithms, cellular automata, etc.
+More people to compare with such as: Nick Bostrom, Eric Smidth, Rob Miles.
+In the people comparison, when clicking on a person, show an info box with evidence. People that have taken the P(doom) quiz, show up here.
+
+---
+
+lets improve the UI, the pdoom should be visually provoking, like in redd and flames animations,
+i mean this is a representation that we are doom

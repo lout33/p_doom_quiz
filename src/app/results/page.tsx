@@ -10,6 +10,7 @@ import ResultsChart from '../components/ResultsChart';
 import { Evidence } from '../lib/bayes-network';
 import FlameEffect from '../components/FlameEffect';
 import EmberParticles from '../components/EmberParticles';
+import ShareWidget from '../components/ShareWidget';
 
 export default function ResultsPage() {
   const [results, setResults] = useState<PDoomResults | null>(null);
@@ -17,6 +18,7 @@ export default function ResultsPage() {
   const [animate, setAnimate] = useState(false);
   const [nickname, setNickname] = useState<string>('');
   const [useStaticText, setUseStaticText] = useState(false);
+  const [showShareWidget, setShowShareWidget] = useState(false);
   
   useEffect(() => {
     // Load evidence from localStorage
@@ -168,11 +170,24 @@ Calculate yours at: ${window.location.origin}`;
     <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-black via-gray-900 to-red-950/20 relative overflow-hidden">
       {/* Apocalyptic overlay */}
       <div className="apocalyptic-overlay" />
-      
+
       {/* Ember particles */}
       <EmberParticles count={results ? Math.min(50, Math.floor((results.pdoom2035.central / 2))) : 20} />
-      
+
       <div className="max-w-4xl mx-auto">
+        {/* Share Widget Button - Top Left */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowShareWidget(true)}
+            className="bg-purple-700 hover:bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+            </svg>
+            Share Widget
+          </button>
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2 text-gray-100">Your P(doom) Results</h1>
           {nickname && (
@@ -422,6 +437,9 @@ Calculate yours at: ${window.location.origin}`;
           </div>
         </div>
       </div>
+
+      {/* Share Widget Modal */}
+      <ShareWidget isOpen={showShareWidget} onClose={() => setShowShareWidget(false)} />
     </div>
   );
 } 
